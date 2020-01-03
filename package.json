@@ -1,0 +1,45 @@
+{
+  "name": "torrent-bot",
+  "version": "1.0.0",
+  "description": "Torrent bot for downloading and searching torrents",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "build": "next build",
+    "heroku-postbuild": "npm run build",
+    "start": "NODE_ENV=production index.js"
+  },
+  "keywords": [
+    "torrent",
+    "bot",
+    "download",
+    "search",
+    "seed"
+  ],
+  "author": "pathetic_geek",
+  "license": "ISC",
+  "engines": {
+    "node": ">=10"
+  },
+  "engineStrict": true,
+  "nodemonConfig": {
+    "ignore": [
+      ".next",
+      "node_modules",
+      "web"
+    ]
+  },
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "next": "^9.1.6",
+    "next-images": "^1.2.0",
+    "nodemon": "^2.0.2",
+    "nprogress": "^0.2.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webtorrent": "^0.107.17"
+  }
+}
