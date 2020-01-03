@@ -4,6 +4,7 @@ const compression = require("compression");
 const WebTorrent = require("webtorrent");
 
 const prettyBytes = require("./lib/prettyBytes");
+const humanTime = require("./lib/humanTime");
 
 const dev = process.env.NODE_ENV !== "production";
 const server = express();
@@ -12,16 +13,27 @@ const handle = app.getRequestHandler();
 const torrentClient = new WebTorrent({});
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
-const statusLoader = torrent => ({
-  magnetURI: torrent.magnetURI,
-  path: torrent.path,
-  name: torrent.name,
-  downloaded: prettyBytes(torrent.downloaded),
-  total: prettyBytes(torrent.length),
-  progress: (torrent.progress * 100).toFixed(1),
-  timeRemaining: parseInt(torrent.timeRemaining / 1000),
-  done: torrent.done
-});
+const statusLoader = torrent => {
+  return {
+    magnetURI: torrent.magnetURI,
+    name: torrent.name,
+    speed: `${prettyBytes(torrent.downloadSpeed)}/s`,
+    downloaded: prettyBytes(torrent.downloaded),
+    total: prettyBytes(torrent.length),
+    progress: parseInt(torrent.progress * 100),
+    timeRemaining: parseInt(torrent.timeRemaining),
+    redableTimeRemaining: humanTime(torrent.timeRemaining),
+    done: torrent.done,
+    files: torrent.files.map(file => ({
+      name: file.name,
+      downloaded: prettyBytes(file.downloaded),
+      total: prettyBytes(file.length),
+      progress: parseInt(file.progress * 100),
+      done: file.done,
+      path: file.path
+    }))
+  };
+};
 
 (async () => {
   await app.prepare();

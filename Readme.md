@@ -17,6 +17,16 @@ torrent: {
   total: string,
   progress: number,
   timeRemaining: string,
-  done: bool
+  done: bool,
+  files: [ file, file, ... ]
+}
+
+file: {
+  name: string,
+  downloaded: string,
+  total: string,
+  progress: number,
+  done: bool,
+  path: string
 }
 ```
