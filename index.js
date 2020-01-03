@@ -5,6 +5,12 @@ const WebTorrent = require("webtorrent");
 
 const prettyBytes = require("./lib/prettyBytes");
 const humanTime = require("./lib/humanTime");
+const piratebaySearch = require("./crawllers/piratebay/search");
+const piratebayDetails = require("./crawllers/piratebay/details");
+const o337xSearch = require("./crawllers/1337x/search");
+const o337xDetails = require("./crawllers/1337x/details");
+const limetorrentSearch = require("./crawllers/limetorrent/search");
+const limetorrentDetails = require("./crawllers/limetorrent/details");
 
 const dev = process.env.NODE_ENV !== "production";
 const server = express();
@@ -76,6 +82,72 @@ const statusLoader = torrent => {
   server.get("/api/v1/torrent/list", (req, res) => {
     const list = torrentClient.torrents.map(torrent => statusLoader(torrent));
     res.send({ error: false, list });
+  });
+
+  server.get("/api/v1/search/piratebay", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await piratebaySearch(query, site);
+      res.send(data);
+    }
+  });
+
+  server.get("/api/v1/details/piratebay", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await piratebayDetails(query, site);
+      res.send(data);
+    }
+  });
+
+  server.get("/api/v1/search/1337x", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await o337xSearch(query, site);
+      res.send(data);
+    }
+  });
+
+  server.get("/api/v1/details/1337x", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await o337xDetails(query, site);
+      res.send(data);
+    }
+  });
+
+  server.get("/api/v1/search/limetorrent", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await limetorrentSearch(query, site);
+      res.send(data);
+    }
+  });
+
+  server.get("/api/v1/details/limetorrent", async (req, res) => {
+    let query = req.query.query;
+    let site = req.query.site;
+    if (query === "" || !query) {
+      res.send({ error: true, errorMessage: "Search term cannot be empty" });
+    } else {
+      const data = await limetorrentDetails(query, site);
+      res.send(data);
+    }
   });
 
   server.all("*", (req, res) => {
