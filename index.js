@@ -55,7 +55,7 @@ const statusLoader = torrent => {
     if (!link) {
       res.send({ error: true, errorMessage: "No magnet link provided" });
     } else {
-      torrentClient.add(link);
+      const torrent = statusLoader(torrentClient.add(link));
       res.send({ error: false, link });
     }
   });
@@ -74,14 +74,21 @@ const statusLoader = torrent => {
 
   server.get("/api/v1/torrent/status", (req, res) => {
     const link = req.query.link;
-    let status = null;
-    if (torrentClient.get(link)) status = statusLoader(torrentClient.get(link));
-    res.send({ error: false, link, status });
+    let torrent = null;
+    if (torrentClient.get(link))
+      torrent = statusLoader(torrentClient.get(link));
+    res.send({ error: false, link, torrent });
   });
 
   server.get("/api/v1/torrent/list", (req, res) => {
-    const list = torrentClient.torrents.map(torrent => statusLoader(torrent));
-    res.send({ error: false, list });
+    const torrents = torrentClient.torrents.map(torrent =>
+      statusLoader(torrent)
+    );
+    res.send({
+      error: false,
+      totalDownloadSpeed: torrentClient.downloadSpeed,
+      torrents
+    });
   });
 
   server.get("/api/v1/search/piratebay", async (req, res) => {
