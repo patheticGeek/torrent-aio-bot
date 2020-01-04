@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Index extends Component {
+class Download extends Component {
   render() {
     return (
       <main>
@@ -10,4 +10,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default Download;

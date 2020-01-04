@@ -1,3 +1,4 @@
+const fs = require("fs");
 const next = require("next");
 const express = require("express");
 const compression = require("compression");
@@ -19,7 +20,42 @@ const handle = app.getRequestHandler();
 const torrentClient = new WebTorrent({});
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
+let uploadStore = [];
+
+function startUpload(torrent) {
+  if (
+    !(uploadStore.filter(obj => obj.magnetURI === torrent.magnetURI).lenght > 0)
+  ) {
+    console.log("uploading: " + torrent.name);
+    uploadStore.push({ status: "starting upload", ...torrent });
+  }
+}
+
 const statusLoader = torrent => {
+  if (torrent.done) {
+    startUpload({
+      path: torrent.path,
+      magnetURI: torrent.magnetURI,
+      name: torrent.name,
+      speed: `${prettyBytes(torrent.downloadSpeed)}/s`,
+      downloaded: prettyBytes(torrent.downloaded),
+      total: prettyBytes(torrent.length),
+      progress: parseInt(torrent.progress * 100),
+      timeRemaining: parseInt(torrent.timeRemaining),
+      redableTimeRemaining: humanTime(torrent.timeRemaining),
+      done: torrent.done,
+      files: torrent.files.map(file => ({
+        name: file.name,
+        path: file.path,
+        downloaded: prettyBytes(file.downloaded),
+        total: prettyBytes(file.length),
+        progress: parseInt(file.progress * 100),
+        done: file.done,
+        path: file.path
+      }))
+    });
+  }
+
   return {
     magnetURI: torrent.magnetURI,
     name: torrent.name,
@@ -50,12 +86,12 @@ const statusLoader = torrent => {
     res.send("pong");
   });
 
-  server.get("/api/v1/torrent/download", (req, res) => {
+  server.get("/api/v1/torrent/start", (req, res) => {
     const link = req.query.link;
     if (!link) {
       res.send({ error: true, errorMessage: "No magnet link provided" });
     } else {
-      const torrent = statusLoader(torrentClient.add(link));
+      torrentClient.add(link);
       res.send({ error: false, link });
     }
   });
@@ -89,6 +125,10 @@ const statusLoader = torrent => {
       totalDownloadSpeed: torrentClient.downloadSpeed,
       torrents
     });
+  });
+
+  server.get("/api/v1/torrent/uploading", (req, res) => {
+    res.send({ error: false, uploadStore });
   });
 
   server.get("/api/v1/search/piratebay", async (req, res) => {
