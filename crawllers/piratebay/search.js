@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer");
 
-async function search(search, site = "https://unblocktheship.org/") {
+async function search(search, site = "https://bayunblocked.net/") {
   try {
     var browser = await puppeteer.launch({
       headless: true,
