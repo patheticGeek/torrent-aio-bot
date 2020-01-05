@@ -5,6 +5,7 @@ const express = require("express");
 const compression = require("compression");
 const puppeteer = require("puppeteer");
 const WebTorrent = require("webtorrent");
+const fetch = require("isomorphic-unfetch");
 
 const prettyBytes = require("./lib/prettyBytes");
 const humanTime = require("./lib/humanTime");
@@ -30,30 +31,6 @@ setInterval(async () => {
 }, 1560000);
 
 const statusLoader = torrent => {
-  if (torrent.done) {
-    startUpload({
-      path: torrent.path,
-      magnetURI: torrent.magnetURI,
-      name: torrent.name,
-      speed: `${prettyBytes(torrent.downloadSpeed)}/s`,
-      downloaded: prettyBytes(torrent.downloaded),
-      total: prettyBytes(torrent.length),
-      progress: parseInt(torrent.progress * 100),
-      timeRemaining: parseInt(torrent.timeRemaining),
-      redableTimeRemaining: humanTime(torrent.timeRemaining),
-      done: torrent.done,
-      files: torrent.files.map(file => ({
-        name: file.name,
-        path: file.path,
-        downloaded: prettyBytes(file.downloaded),
-        total: prettyBytes(file.length),
-        progress: parseInt(file.progress * 100),
-        done: file.done,
-        path: file.path
-      }))
-    });
-  }
-
   return {
     magnetURI: torrent.magnetURI,
     name: torrent.name,
@@ -108,12 +85,40 @@ const statusLoader = torrent => {
     }
   });
 
+  server.get("/api/v1/torrent/download", async (req, res) => {
+    const link = req.query.link;
+    const index = req.query.index;
+    if (!link || !index) {
+      res.send({ error: true, errorMessage: "No link and/or index provided" });
+    } else {
+      const torrent = torrentClient.get(link);
+      if (torrent) {
+        if (!torrent.files[index].done) {
+          res.send({
+            error: true,
+            errorMessage: "It hasent finished downloading yet",
+            link
+          });
+        } else {
+        }
+      } else {
+        res.send({
+          error: true,
+          errorMessage: "No such torrent exists",
+          link
+        });
+      }
+    }
+  });
+
   server.get("/api/v1/torrent/start", (req, res) => {
     const link = req.query.link;
     if (!link) {
-      res.send({ error: true, errorMessage: "No magnet link provided" });
+      res.send({ error: true, errorMessage: "No link provided" });
     } else {
-      torrentClient.add(link);
+      if (!torrentClient.get(link)) {
+        torrentClient.add(link);
+      }
       res.send({ error: false, link });
     }
   });
@@ -133,9 +138,12 @@ const statusLoader = torrent => {
   server.get("/api/v1/torrent/status", (req, res) => {
     const link = req.query.link;
     let torrent = null;
-    if (torrentClient.get(link))
-      torrent = statusLoader(torrentClient.get(link));
-    res.send({ error: false, link, torrent });
+    if (torrentClient.get(link)) {
+      torrent = torrentClient.get(link);
+      res.send({ error: false, link, status: statusLoader(torrent) });
+    } else {
+      res.send({ error: true, errorMessage: "No such torrent exists", link });
+    }
   });
 
   server.get("/api/v1/torrent/list", (req, res) => {

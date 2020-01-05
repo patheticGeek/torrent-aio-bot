@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 
 class Search extends Component {
-  static getServerProps = ({ query: { term } }) => ({ term: term });
+  static getServerProps = ({ query: { term, site } }) => ({ term, site });
 
-  state = { site: "piratebay", query: this.props.term ? this.props.term : "" };
+  state = {
+    site: this.props.site || "piratebay",
+    q: this.props.q ? this.props.q : ""
+  };
 
   render() {
     return (
