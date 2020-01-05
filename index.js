@@ -22,6 +22,13 @@ const handle = app.getRequestHandler();
 const torrentClient = new WebTorrent({});
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
+setInterval(async () => {
+  const data = await fetch(
+    "https://ping-pong-sn.herokuapp.com/ping?link=https://torrent-aio-bot.herokuapp.com/ping"
+  );
+  console.log("setInterval triggred: ", data.status);
+}, 1560000);
+
 const statusLoader = torrent => {
   if (torrent.done) {
     startUpload({
