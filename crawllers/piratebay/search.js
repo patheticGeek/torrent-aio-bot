@@ -1,11 +1,5 @@
-const puppeteer = require("puppeteer");
-
-async function search(search, site = "https://bayunblocked.net/") {
+async function search(browser, search, site = "https://bayunblocked.net/") {
   try {
-    var browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"]
-    });
     var page = await browser.newPage();
     var link = site + "s/?q=" + search;
     await page.goto(link);
@@ -40,7 +34,6 @@ async function search(search, site = "https://bayunblocked.net/") {
     });
 
     await page.close();
-    await browser.close();
 
     return searchResults;
   } catch (err) {

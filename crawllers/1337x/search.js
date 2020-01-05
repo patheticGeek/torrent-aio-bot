@@ -1,11 +1,5 @@
-const puppeteer = require("puppeteer");
-
-async function search(search, site = "https://1337x.to/") {
+async function search(browser, search, site = "https://1337x.to/") {
   try {
-    var browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"]
-    });
     var page = await browser.newPage();
     await page.goto(site + "search/" + search + "/1/");
 
@@ -44,7 +38,6 @@ async function search(search, site = "https://1337x.to/") {
     });
 
     await page.close();
-    await browser.close();
 
     return searchResults;
   } catch (err) {

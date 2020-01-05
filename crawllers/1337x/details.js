@@ -1,11 +1,5 @@
-const puppeteer = require("puppeteer");
-
-async function details(link) {
+async function details(browser, link) {
   try {
-    var browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"]
-    });
     var page = await browser.newPage();
     await page.goto(link);
 
@@ -35,7 +29,6 @@ async function details(link) {
     });
 
     await page.close();
-    await browser.close();
 
     return torrentDetails;
   } catch (err) {

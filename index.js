@@ -1,7 +1,9 @@
 const fs = require("fs");
+const disk = require("diskusage");
 const next = require("next");
 const express = require("express");
 const compression = require("compression");
+const puppeteer = require("puppeteer");
 const WebTorrent = require("webtorrent");
 
 const prettyBytes = require("./lib/prettyBytes");
@@ -19,17 +21,6 @@ const app = next({ dev, dir: "web" });
 const handle = app.getRequestHandler();
 const torrentClient = new WebTorrent({});
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-
-let uploadStore = [];
-
-function startUpload(torrent) {
-  if (
-    !(uploadStore.filter(obj => obj.magnetURI === torrent.magnetURI).lenght > 0)
-  ) {
-    console.log("uploading: " + torrent.name);
-    uploadStore.push({ status: "starting upload", ...torrent });
-  }
-}
 
 const statusLoader = torrent => {
   if (torrent.done) {
@@ -78,12 +69,36 @@ const statusLoader = torrent => {
 };
 
 (async () => {
+  var browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox"]
+  });
+
   await app.prepare();
 
   server.use(compression());
 
   server.get("/ping", (req, res) => {
     res.send("pong");
+  });
+
+  server.get("/api/v1/diskinfo", async (req, res) => {
+    const path = req.query.path || "/";
+    try {
+      const { available, free, total } = await disk.check(path);
+      res.send({
+        error: false,
+        path,
+        info: {
+          available: prettyBytes(available),
+          free: prettyBytes(free),
+          total: prettyBytes(total)
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      res.send({ error: true });
+    }
   });
 
   server.get("/api/v1/torrent/start", (req, res) => {
@@ -137,7 +152,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await piratebaySearch(query, site);
+      const data = await piratebaySearch(browser, query, site);
       res.send(data);
     }
   });
@@ -148,7 +163,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await piratebayDetails(query, site);
+      const data = await piratebayDetails(browser, query);
       res.send(data);
     }
   });
@@ -159,7 +174,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await o337xSearch(query, site);
+      const data = await o337xSearch(browser, query, site);
       res.send(data);
     }
   });
@@ -170,7 +185,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await o337xDetails(query, site);
+      const data = await o337xDetails(browser, query);
       res.send(data);
     }
   });
@@ -181,7 +196,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await limetorrentSearch(query, site);
+      const data = await limetorrentSearch(browser, query, site);
       res.send(data);
     }
   });
@@ -192,7 +207,7 @@ const statusLoader = torrent => {
     if (query === "" || !query) {
       res.send({ error: true, errorMessage: "Search term cannot be empty" });
     } else {
-      const data = await limetorrentDetails(query, site);
+      const data = await limetorrentDetails(browser, query);
       res.send(data);
     }
   });
