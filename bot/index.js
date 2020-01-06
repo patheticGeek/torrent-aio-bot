@@ -1,5 +1,6 @@
 const Telegram = require("node-telegram-bot-api");
-const fetch = require("isomorphic-unfetch");
+const axios = require("axios");
+
 const dev = process.env.NODE_ENV !== "production";
 const token = dev ? require("./token") : process.env.TELEGRAM_TOKEN;
 const api = "https://torrent-aio-bot.herokuapp.com/api/v1";
@@ -19,17 +20,93 @@ bot.onText(/\/search piratebay (.+)/, async (msg, match) => {
 
   bot.sendMessage(from, "Searching...");
 
-  const data = await fetch(api + "/search/piratebay?query=" + query);
-  if (data.error) {
+  const data = await axios(api + "/search/piratebay?query=" + query).then(
+    ({ data }) => data
+  );
+  if (!data || data.error) {
     bot.sendMessage(from, "An error occured on server");
   } else if (data.totalResults === 0) {
     bot.sendMessage(from, "No results found.");
-  } else if (data.results.lenght > 0) {
-    let results = "";
-    data.results.forEach(result => {
-      results += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+  } else if (data.results.length > 0) {
+    let results1 = "";
+    let results2 = "";
+    let results3 = "";
+    data.results.forEach((result, i) => {
+      if (i <= 2) {
+        results1 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (2 < i && i <= 5) {
+        results2 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (5 < i && i <= 8) {
+        results3 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      }
     });
-    bot.sendMessage(from, results);
+    bot.sendMessage(from, results1);
+    bot.sendMessage(from, results2);
+    bot.sendMessage(from, results3);
+  }
+});
+
+bot.onText(/\/search 1337x (.+)/, async (msg, match) => {
+  var from = msg.from.id;
+  var query = match[1];
+
+  bot.sendMessage(from, "Searching...");
+
+  const data = await axios(api + "/search/1337x?query=" + query).then(
+    ({ data }) => data
+  );
+  if (!data || data.error) {
+    bot.sendMessage(from, "An error occured on server");
+  } else if (data.totalResults === 0) {
+    bot.sendMessage(from, "No results found.");
+  } else if (data.results.length > 0) {
+    let results1 = "";
+    let results2 = "";
+    let results3 = "";
+    data.results.forEach((result, i) => {
+      if (i <= 2) {
+        results1 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (2 < i && i <= 5) {
+        results2 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (5 < i && i <= 8) {
+        results3 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      }
+    });
+    bot.sendMessage(from, results1);
+    bot.sendMessage(from, results2);
+    bot.sendMessage(from, results3);
+  }
+});
+
+bot.onText(/\/search limetorrent (.+)/, async (msg, match) => {
+  var from = msg.from.id;
+  var query = match[1];
+
+  bot.sendMessage(from, "Searching...");
+
+  const data = await axios(api + "/search/limetorrent?query=" + query).then(
+    ({ data }) => data
+  );
+  if (!data || data.error) {
+    bot.sendMessage(from, "An error occured on server");
+  } else if (data.totalResults === 0) {
+    bot.sendMessage(from, "No results found.");
+  } else if (data.results.length > 0) {
+    let results1 = "";
+    let results2 = "";
+    let results3 = "";
+    data.results.forEach((result, i) => {
+      if (i <= 2) {
+        results1 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (2 < i && i <= 5) {
+        results2 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      } else if (5 < i && i <= 8) {
+        results3 += `Name: ${result.name} \nSeeds: ${result.seeds} \nDetails: ${result.details} \nLink: ${result.link} \n\n`;
+      }
+    });
+    bot.sendMessage(from, results1);
+    bot.sendMessage(from, results2);
+    bot.sendMessage(from, results3);
   }
 });
 

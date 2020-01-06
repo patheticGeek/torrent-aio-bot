@@ -5,7 +5,7 @@ const express = require("express");
 const compression = require("compression");
 const puppeteer = require("puppeteer");
 const WebTorrent = require("webtorrent");
-const fetch = require("isomorphic-unfetch");
+const axios = require("axios");
 require("./bot");
 
 const prettyBytes = require("./lib/prettyBytes");
@@ -25,7 +25,7 @@ const torrentClient = new WebTorrent({});
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 setInterval(async () => {
-  const data = await fetch(
+  const data = await axios(
     "https://ping-pong-sn.herokuapp.com/ping?link=https://torrent-aio-bot.herokuapp.com/ping"
   );
   console.log("setInterval triggred: ", data.status);
