@@ -112,24 +112,21 @@ bot.onText(/\/search limetorrent (.+)/, async (msg, match) => {
   }
 });
 
+bot.onText(/\/details piratebay (.+)/, async (msg, match) => {
+  var from = msg.from.id;
+  var query = match[1];
+
+  bot.sendMessage(from, "Loading...");
+
+  const data = await axios(api + "/details/piratebay?query=" + query).then(
+    ({ data }) => data
+  );
+  console.log(data);
+});
+
 bot.onText(/\/diskinfo (.+)/, async (msg, match) => {
   const from = msg.chat.id;
   const path = match[1];
-  try {
-    const { available, free, total } = await disk.check(path);
-    const info = `Path: ${path} \nAvail: ${prettyBytes(
-      available
-    )} \nFree: ${prettyBytes(free)} \nTotal: ${prettyBytes(total)}`;
-    bot.sendMessage(from, info);
-  } catch (e) {
-    console.log(e);
-    bot.sendMessage("An error occured.");
-  }
-});
-
-bot.onText(/\/diskinfo/, async (msg, match) => {
-  const from = msg.chat.id;
-  const path = "/";
   try {
     const { available, free, total } = await disk.check(path);
     const info = `Path: ${path} \nAvail: ${prettyBytes(
