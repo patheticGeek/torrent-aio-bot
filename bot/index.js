@@ -1,5 +1,7 @@
 const Telegram = require("node-telegram-bot-api");
 const axios = require("axios");
+const disk = require("diskusage");
+const prettyBytes = require("../lib/prettyBytes");
 
 const dev = process.env.NODE_ENV !== "production";
 const token = dev ? require("./token") : process.env.TELEGRAM_TOKEN;
@@ -107,6 +109,36 @@ bot.onText(/\/search limetorrent (.+)/, async (msg, match) => {
     bot.sendMessage(from, results1);
     bot.sendMessage(from, results2);
     bot.sendMessage(from, results3);
+  }
+});
+
+bot.onText(/\/diskinfo (.+)/, async (msg, match) => {
+  const from = msg.chat.id;
+  const path = match[1];
+  try {
+    const { available, free, total } = await disk.check(path);
+    const info = `Path: ${path} \nAvail: ${prettyBytes(
+      available
+    )} \nFree: ${prettyBytes(free)} \nTotal: ${prettyBytes(total)}`;
+    bot.sendMessage(from, info);
+  } catch (e) {
+    console.log(e);
+    bot.sendMessage("An error occured.");
+  }
+});
+
+bot.onText(/\/diskinfo/, async (msg, match) => {
+  const from = msg.chat.id;
+  const path = "/";
+  try {
+    const { available, free, total } = await disk.check(path);
+    const info = `Path: ${path} \nAvail: ${prettyBytes(
+      available
+    )} \nFree: ${prettyBytes(free)} \nTotal: ${prettyBytes(total)}`;
+    bot.sendMessage(from, info);
+  } catch (e) {
+    console.log(e);
+    bot.sendMessage("An error occured.");
   }
 });
 
