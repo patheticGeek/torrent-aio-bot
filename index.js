@@ -8,6 +8,7 @@ const keepalive = require("./utils/keepalive");
 const prettyBytes = require("./utils/prettyBytes");
 const humanTime = require("./utils/humanTime");
 const diskinfo = require("./utils/diskinfo");
+const status = require("./utils/status");
 
 const search = require("./routes/search");
 const details = require("./routes/details");
@@ -62,6 +63,11 @@ const statusLoader = torrent => {
     const path = req.query.path;
     const info = await diskinfo(path);
     res.send(info);
+  });
+
+  server.get("/api/v1/status", async (req, res) => {
+    const currStatus = await status();
+    res.send(currStatus);
   });
 
   server.get("/api/v1/torrent/download", async (req, res) => {

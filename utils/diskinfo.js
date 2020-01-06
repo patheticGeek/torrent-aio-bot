@@ -6,15 +6,13 @@ async function diskinfo(path = "/") {
     const { available, free, total } = await disk.check(path);
     return {
       path,
-      info: {
-        available: prettyBytes(available),
-        free: prettyBytes(free),
-        total: prettyBytes(total)
-      }
+      available: prettyBytes(available),
+      free: prettyBytes(free),
+      total: prettyBytes(total)
     };
   } catch (e) {
     console.log(e);
-    return { path, info: null };
+    return e.message;
   }
 }
 
