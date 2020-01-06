@@ -2,6 +2,7 @@ const Telegram = require("node-telegram-bot-api");
 const axios = require("axios");
 const disk = require("diskusage");
 const prettyBytes = require("../lib/prettyBytes");
+const humanTime = require("../lib/humanTime");
 
 const dev = process.env.NODE_ENV !== "production";
 const token = dev ? require("./token") : process.env.TELEGRAM_TOKEN;
@@ -195,6 +196,28 @@ bot.onText(/\/diskinfo (.+)/, async (msg, match) => {
     const info = `Path: ${path} \nAvail: ${prettyBytes(
       available
     )} \nFree: ${prettyBytes(free)} \nTotal: ${prettyBytes(total)}`;
+    bot.sendMessage(from, info);
+  } catch (e) {
+    console.log(e);
+    bot.sendMessage("An error occured.");
+  }
+});
+
+bot.onText(/\/uptime/, async (msg, match) => {
+  const from = msg.chat.id;
+  bot.sendMessage(from, humanTime(process.uptime() * 1000));
+});
+
+bot.onText(/\/status/, async (msg, match) => {
+  const from = msg.chat.id;
+  const path = "/app";
+  try {
+    const { available, free, total } = await disk.check(path);
+    const info = `Avail: ${prettyBytes(available)} \nFree: ${prettyBytes(
+      free
+    )} \nTotal: ${prettyBytes(total)} \nUptime: ${humanTime(
+      process.uptime() * 1000
+    )}`;
     bot.sendMessage(from, info);
   } catch (e) {
     console.log(e);
