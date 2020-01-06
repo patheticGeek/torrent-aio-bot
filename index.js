@@ -67,10 +67,6 @@ const statusLoader = torrent => {
     res.send("pong");
   });
 
-  server.get("/telegram-bot", (res, req) => {
-    console.log("webhook activated");
-  });
-
   server.get("/api/v1/diskinfo", async (req, res) => {
     const path = req.query.path || "/";
     try {
