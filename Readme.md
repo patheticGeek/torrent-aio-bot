@@ -6,6 +6,15 @@ You might be lazy too so here ya go:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
+TODO after deploy:
+1. Set the enviorment variables. Go to heroku dashboard open the app then Settings > Config vars > Reveal Config vars. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+
+## Bot commands -
+| Command                |                                                                                Usage |
+| :--------------------- | -----------------------------------------------------------------------------------: |
+| /search {site} {query} | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
+| /details {site} {link} |                                           Gets the details of torrent on given link. |
+
 ## API Endpoints -
 
 prefix: /api/v1
