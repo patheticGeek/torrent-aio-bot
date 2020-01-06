@@ -1,5 +1,11 @@
-async function details(browser, link) {
+const puppeteer = require("puppeteer");
+
+async function details(link) {
   try {
+    var browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox"]
+    });
     await browser.userAgent(
       "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-cn; GT-I9500 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko)Version/4.0 MQQBrowser/5.0 QQ-URL-Manager Mobile Safari/537.36"
     );
@@ -42,6 +48,7 @@ async function details(browser, link) {
     });
 
     await page.close();
+    await browser.close();
 
     return torrentDetails;
   } catch (err) {

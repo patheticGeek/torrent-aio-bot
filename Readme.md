@@ -7,7 +7,10 @@ You might be lazy too so here ya go:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
 TODO after deploy:
-1. Set the enviorment variables. Go to heroku dashboard open the app then Settings > Config vars > Reveal Config vars. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+
+Set the enviorment variables. Go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
+1. Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com".
+2. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
 
 ## Bot commands -
 | Command                |                                                                                Usage |

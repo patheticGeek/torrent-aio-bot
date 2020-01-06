@@ -1,35 +1,27 @@
-const fs = require("fs");
-const disk = require("diskusage");
-const next = require("next");
 const express = require("express");
+const next = require("next");
 const compression = require("compression");
-const puppeteer = require("puppeteer");
 const WebTorrent = require("webtorrent");
-const axios = require("axios");
-require("./bot");
+require("./lib/bot");
 
-const prettyBytes = require("./lib/prettyBytes");
-const humanTime = require("./lib/humanTime");
-const piratebaySearch = require("./crawllers/piratebay/search");
-const piratebayDetails = require("./crawllers/piratebay/details");
-const o337xSearch = require("./crawllers/1337x/search");
-const o337xDetails = require("./crawllers/1337x/details");
-const limetorrentSearch = require("./crawllers/limetorrent/search");
-const limetorrentDetails = require("./crawllers/limetorrent/details");
+const keepalive = require("./utils/keepalive");
+const prettyBytes = require("./utils/prettyBytes");
+const humanTime = require("./utils/humanTime");
+const diskinfo = require("./utils/diskinfo");
+
+const search = require("./routes/search");
+const details = require("./routes/details");
 
 const dev = process.env.NODE_ENV !== "production";
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+
 const server = express();
 const app = next({ dev, dir: "web" });
 const handle = app.getRequestHandler();
-const torrentClient = new WebTorrent({});
-const PORT = parseInt(process.env.PORT, 10) || 3000;
 
-setInterval(async () => {
-  const data = await axios(
-    "https://ping-pong-sn.herokuapp.com/ping?link=https://torrent-aio-bot.herokuapp.com/ping"
-  );
-  console.log("setInterval triggred: ", data.status);
-}, 1560000);
+const torrentClient = new WebTorrent();
+
+keepalive();
 
 const statusLoader = torrent => {
   return {
@@ -54,36 +46,22 @@ const statusLoader = torrent => {
 };
 
 (async () => {
-  var browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox"]
-  });
-
   await app.prepare();
 
   server.use(compression());
+
+  server.use("/api/v1/search", search);
+
+  server.use("/api/v1/details", details);
 
   server.get("/ping", (req, res) => {
     res.send("pong");
   });
 
   server.get("/api/v1/diskinfo", async (req, res) => {
-    const path = req.query.path || "/";
-    try {
-      const { available, free, total } = await disk.check(path);
-      res.send({
-        error: false,
-        path,
-        info: {
-          available: prettyBytes(available),
-          free: prettyBytes(free),
-          total: prettyBytes(total)
-        }
-      });
-    } catch (e) {
-      console.log(e);
-      res.send({ error: true });
-    }
+    const path = req.query.path;
+    const info = await diskinfo(path);
+    res.send(info);
   });
 
   server.get("/api/v1/torrent/download", async (req, res) => {
@@ -156,76 +134,6 @@ const statusLoader = torrent => {
       totalDownloadSpeed: torrentClient.downloadSpeed,
       torrents
     });
-  });
-
-  server.get("/api/v1/torrent/uploading", (req, res) => {
-    res.send({ error: false, uploadStore });
-  });
-
-  server.get("/api/v1/search/piratebay", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await piratebaySearch(browser, query, site);
-      res.send(data);
-    }
-  });
-
-  server.get("/api/v1/details/piratebay", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await piratebayDetails(browser, query);
-      res.send(data);
-    }
-  });
-
-  server.get("/api/v1/search/1337x", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await o337xSearch(browser, query, site);
-      res.send(data);
-    }
-  });
-
-  server.get("/api/v1/details/1337x", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await o337xDetails(browser, query);
-      res.send(data);
-    }
-  });
-
-  server.get("/api/v1/search/limetorrent", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await limetorrentSearch(browser, query, site);
-      res.send(data);
-    }
-  });
-
-  server.get("/api/v1/details/limetorrent", async (req, res) => {
-    let query = req.query.query;
-    let site = req.query.site;
-    if (query === "" || !query) {
-      res.send({ error: true, errorMessage: "Search term cannot be empty" });
-    } else {
-      const data = await limetorrentDetails(browser, query);
-      res.send(data);
-    }
   });
 
   server.all("*", (req, res) => {

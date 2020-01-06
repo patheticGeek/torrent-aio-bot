@@ -1,12 +1,18 @@
-async function search(browser, search, site = "https://1337x.to/") {
+const puppeteer = require("puppeteer");
+
+async function search(search, site = "https://1337x.to/") {
   try {
+    var browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox"]
+    });
     var page = await browser.newPage();
     await page.goto(site + "search/" + search + "/1/");
 
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("tbody");
       if (!searchResults) {
-        return { error: false, results: [], totalResults: 0 };
+        return { error: true, errorMessage: "No results found" };
       }
       var tableRows = searchResults.querySelectorAll("tr");
       var results = [];
@@ -32,12 +38,12 @@ async function search(browser, search, site = "https://1337x.to/") {
       return {
         error: false,
         results,
-        totalResults: results.length,
         errorMessage: ""
       };
     });
 
     await page.close();
+    await browser.close();
 
     return searchResults;
   } catch (err) {

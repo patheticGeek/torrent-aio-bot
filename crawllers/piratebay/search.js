@@ -1,13 +1,18 @@
-async function search(browser, search, site = "https://bayunblocked.net/") {
+const puppeteer = require("puppeteer");
+
+async function search(search, site = "https://bayunblocked.net/") {
   try {
+    var browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox"]
+    });
     var page = await browser.newPage();
-    var link = site + "s/?q=" + search;
-    await page.goto(link);
+    await page.goto(site + "s/?q=" + search);
 
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("div#SearchResults");
       if (!searchResults) {
-        return { error: false, results: [], totalResults: 0 };
+        return { error: true, errorMessage: "No results found" };
       }
       var tableRows = searchResults.querySelectorAll("tr");
       var results = [];
@@ -28,12 +33,12 @@ async function search(browser, search, site = "https://bayunblocked.net/") {
       return {
         error: false,
         results,
-        totalResults: results.length,
         errorMessage: ""
       };
     });
 
     await page.close();
+    await browser.close();
 
     return searchResults;
   } catch (err) {
