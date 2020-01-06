@@ -15,6 +15,10 @@ Set the enviorment variables. Go to heroku dashboard open the app then go to Set
 ## Bot commands -
 | Command                |                                                                                Usage |
 | :--------------------- | -----------------------------------------------------------------------------------: |
+| /start                 |                                                       Gives some info to get started |
+| /status                |                          Gives status about the server such as disk space and uptime |
+| /uptime                |                                                           Gives uptime of the server |
+| /diskinfo {path}       |                                                Gives the space available on the path |
 | /search {site} {query} | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
 | /details {site} {link} |                                           Gets the details of torrent on given link. |
 
