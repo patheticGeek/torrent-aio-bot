@@ -1,6 +1,6 @@
 const axios = require("axios");
 const dev = process.env.NODE_ENV !== "production";
-const { site } = dev ? require("../config") : process.env.SITE;
+const site = dev ? require("../config").site : process.env.SITE;
 
 function keepalive() {
   if (site) {
