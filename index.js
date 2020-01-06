@@ -6,6 +6,7 @@ const compression = require("compression");
 const puppeteer = require("puppeteer");
 const WebTorrent = require("webtorrent");
 const fetch = require("isomorphic-unfetch");
+require("./bot");
 
 const prettyBytes = require("./lib/prettyBytes");
 const humanTime = require("./lib/humanTime");
@@ -64,6 +65,10 @@ const statusLoader = torrent => {
 
   server.get("/ping", (req, res) => {
     res.send("pong");
+  });
+
+  server.get("/telegram-bot", (res, req) => {
+    console.log("webhook activated");
   });
 
   server.get("/api/v1/diskinfo", async (req, res) => {

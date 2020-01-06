@@ -1,4 +1,3 @@
 node_modules/
 .next/
-credentials.json
-token.json
+token.js
