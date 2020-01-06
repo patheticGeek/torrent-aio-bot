@@ -121,7 +121,70 @@ bot.onText(/\/details piratebay (.+)/, async (msg, match) => {
   const data = await axios(api + "/details/piratebay?query=" + query).then(
     ({ data }) => data
   );
-  console.log(data);
+  if (!data || data.error) {
+    bot.sendMessage(from, "An error occured");
+  } else if (data.torrent) {
+    const torrent = data.torrent;
+    let result1 = "";
+    let result2 = "";
+    result1 += `Title: ${torrent.title} \n\nInfo: ${torrent.info} \n\nMagnet Link:`;
+    torrent.details.forEach(item => {
+      result2 += `${item.infoTitle} ${item.infoText} \n\n`;
+    });
+    bot.sendMessage(from, result1);
+    bot.sendMessage(from, torrent.downloadLink);
+    bot.sendMessage(from, result2);
+  }
+});
+
+bot.onText(/\/details 1337x (.+)/, async (msg, match) => {
+  var from = msg.from.id;
+  var query = match[1];
+
+  bot.sendMessage(from, "Loading...");
+
+  const data = await axios(api + "/details/1337x?query=" + query).then(
+    ({ data }) => data
+  );
+  if (!data || data.error) {
+    bot.sendMessage(from, "An error occured");
+  } else if (data.torrent) {
+    const torrent = data.torrent;
+    let result1 = "";
+    let result2 = "";
+    result1 += `Title: ${torrent.title} \n\nInfo: ${torrent.info} \n\nMagnet Link:`;
+    torrent.details.forEach(item => {
+      result2 += `${item.infoTitle} ${item.infoText} \n\n`;
+    });
+    bot.sendMessage(from, result1);
+    bot.sendMessage(from, torrent.downloadLink);
+    bot.sendMessage(from, result2);
+  }
+});
+
+bot.onText(/\/details limetorrent (.+)/, async (msg, match) => {
+  var from = msg.from.id;
+  var query = match[1];
+
+  bot.sendMessage(from, "Loading...");
+
+  const data = await axios(api + "/details/limetorrent?query=" + query).then(
+    ({ data }) => data
+  );
+  if (!data || data.error) {
+    bot.sendMessage(from, "An error occured");
+  } else if (data.torrent) {
+    const torrent = data.torrent;
+    let result1 = "";
+    let result2 = "";
+    result1 += `Title: ${torrent.title} \n\nInfo: ${torrent.info} \n\nMagnet Link:`;
+    torrent.details.forEach(item => {
+      result2 += `${item.infoTitle} ${item.infoText} \n\n`;
+    });
+    bot.sendMessage(from, result1);
+    bot.sendMessage(from, torrent.downloadLink);
+    bot.sendMessage(from, result2);
+  }
 });
 
 bot.onText(/\/diskinfo (.+)/, async (msg, match) => {
