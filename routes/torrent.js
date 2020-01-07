@@ -44,4 +44,13 @@ router.get("/list", (req, res) => {
   }
 });
 
+router.get("/downloads", (req, res) => {
+  try {
+    res.send({ error: false, downloads: torrent.listDownloads() });
+  } catch (err) {
+    console.log(err);
+    res.send({ error: true, errorMessage: err.message });
+  }
+});
+
 module.exports = router;

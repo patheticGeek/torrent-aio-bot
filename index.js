@@ -26,6 +26,8 @@ keepalive();
 
   server.use(compression());
 
+  server.use("/api/v1/downloads", express.static("downloads"));
+
   server.use("/api/v1/search", search);
 
   server.use("/api/v1/details", details);
