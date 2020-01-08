@@ -28,24 +28,25 @@ prefix: /api/v1
 
 ### For downloading:
 
-| Endpoint        |    Params    |                                                              Return |
-| :-------------- | :----------: | ------------------------------------------------------------------: |
-| /torrent/start  | link: string |                { error: bool, link: string, errorMessage?: string } |
-| /torrent/list   |     none     |                  {error: bool, torrents: [ torrent, torrent, ... ]} |
-| /torrent/remove | link: string |                { error: bool, errorMessage?: string, link: string } |
-| /torrent/status | link: string | {link: string, error: bool, status: torrent, errorMessage?: string} |
+| Endpoint           |    Params    |                                                              Return |
+| :----------------- | :----------: | ------------------------------------------------------------------: |
+| /torrent/start     | link: string |                { error: bool, link: string, errorMessage?: string } |
+| /torrent/list      |     none     |                  {error: bool, torrents: [ torrent, torrent, ... ]} |
+| /torrent/remove    | link: string |                { error: bool, errorMessage?: string, link: string } |
+| /torrent/status    | link: string | {link: string, error: bool, status: torrent, errorMessage?: string} |
+| /torrent/downloads |     none     |              error: bool, downloads: [{status: string, ...torrent}] |
 
 link is magnet uri of the torrent
 
 ```
 torrent: {
+  infoHash: string,
   magnetURI: string,
   name: string,
   downloaded: string,
   total: string,
   progress: number,
   timeRemaining: string,
-  done: bool,
   files: [ file, file, ... ]
 }
 
@@ -55,7 +56,8 @@ file: {
   total: string,
   progress: number,
   done: bool,
-  path: string
+  path: string,
+  downloadLink: string
 }
 ```
 

@@ -1,7 +1,6 @@
 const express = require("express");
 const next = require("next");
 const compression = require("compression");
-require("./lib/bot");
 
 const humanTime = require("./utils/humanTime");
 const keepalive = require("./utils/keepalive");
