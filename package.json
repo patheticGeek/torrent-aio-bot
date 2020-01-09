@@ -7,7 +7,8 @@
     "dev": "nodemon index.js",
     "build": "next build web",
     "heroku-postbuild": "npm run build",
-    "start": "NODE_ENV=production node index.js"
+    "start": "NODE_ENV=production node index.js",
+    "heroku-postdeploy": "./puppeteer.sh"
   },
   "keywords": [
     "torrent",
