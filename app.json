@@ -4,7 +4,7 @@
   "repository": "https://github.com/patheticGeek/torrent-aio-bot",
   "keywords": ["node", "express", "bot", "torrent", "automation"],
   "builpacks": [
-    "heroku/nodejs",
-    "https://github.com/jontewks/puppeteer-heroku-buildpack.git"
+    { "url": "heroku/nodejs" },
+    { "url": "https://github.com/jontewks/puppeteer-heroku-buildpack.git" }
   ]
 }
