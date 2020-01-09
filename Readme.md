@@ -13,14 +13,18 @@ Set the enviorment variables. Go to heroku dashboard open the app then go to Set
 2. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
 
 ## Bot commands -
-| Command                |                                                                                Usage |
-| :--------------------- | -----------------------------------------------------------------------------------: |
-| /start                 |                                                       Gives some info to get started |
-| /status                |                          Gives status about the server such as disk space and uptime |
-| /uptime                |                                                           Gives uptime of the server |
-| /diskinfo {path}       |                                                Gives the space available on the path |
-| /search {site} {query} | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
-| /details {site} {link} |                                           Gets the details of torrent on given link. |
+| Command                         |                                                                                Usage |
+| :------------------------------ | -----------------------------------------------------------------------------------: |
+| /start                          |                                                       Gives some info to get started |
+| /status                         |                          Gives status about the server such as disk space and uptime |
+| /uptime                         |                                                           Gives uptime of the server |
+| /diskinfo {path}                |                                                Gives the space available on the path |
+| /search {site} {query}          | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
+| /details {site} {link}          |                                           Gets the details of torrent on given link. |
+| /torrent start {magnet link}    |                                                       Starts the download of torrent |
+| /torrent remove {magnet link}   |                                      Removes the torrent at the magnet link if added |
+| /torrent status {magnet link}   |                                                          Gives the status of torrent |
+| /torrent download {magnet link} |                                     Gives the download link of torrent if downloaded |
 
 ## API Endpoints -
 
