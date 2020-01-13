@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "build": "next build web",
-    "heroku-postbuild": "./puppeteerScript.sh && npm run build",
+    "heroku-postbuild": "./puppeteerSetup.sh && npm run build",
     "start": "NODE_ENV=production node index.js"
   },
   "keywords": [
