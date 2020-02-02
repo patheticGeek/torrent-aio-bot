@@ -5,6 +5,9 @@
   opacity: 0.95;
   z-index: 20;
 }
+.nav.nav-horiz {
+  border-bottom: 0px;
+}
 .nav > .content {
   display: flex;
   padding: 0px 16px;
@@ -26,6 +29,8 @@
 
 .nav .nav-links {
   margin-left: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .nav a {
