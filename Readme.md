@@ -2,7 +2,8 @@
 
 Lorem ipsum i am too lazy figure what it does yourself
 
-You might be lazy too so here ya go:
+Heroku buildpack error so cannot deploy to heroku without manually doing it
+<!-- You might be lazy too so here ya go:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
@@ -11,21 +12,20 @@ TODO after deploy:
 Set the enviorment variables. Go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
 1. Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
 2. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
-3. Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes.
+3. Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes. -->
 
 ## Bot commands -
-| Command                         |                                                                                Usage |
-| :------------------------------ | -----------------------------------------------------------------------------------: |
-| /start                          |                                                       Gives some info to get started |
-| /status                         |                          Gives status about the server such as disk space and uptime |
-| /uptime                         |                                                           Gives uptime of the server |
-| /diskinfo {path}                |                                                Gives the space available on the path |
-| /search {site} {query}          | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
-| /details {site} {link}          |                                           Gets the details of torrent on given link. |
-| /torrent start {magnet link}    |                                                       Starts the download of torrent |
-| /torrent remove {magnet link}   |                                      Removes the torrent at the magnet link if added |
-| /torrent status {magnet link}   |                                                          Gives the status of torrent |
-| /torrent download {magnet link} |                                     Gives the download link of torrent if downloaded |
+| Command                       |                                                                                Usage |
+| :---------------------------- | -----------------------------------------------------------------------------------: |
+| /start                        |                                                       Gives some info to get started |
+| /status                       |                          Gives status about the server such as disk space and uptime |
+| /uptime                       |                                                           Gives uptime of the server |
+| /diskinfo {path}              |                                                Gives the space available on the path |
+| /search {site} {query}        | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
+| /details {site} {link}        |                                           Gets the details of torrent on given link. |
+| /torrent start {magnet link}  |                                                       Starts the download of torrent |
+| /torrent remove {magnet link} |                                      Removes the torrent at the magnet link if added |
+| /torrent status {magnet link} |                                                          Gives the status of torrent |
 
 ## API Endpoints -
 
