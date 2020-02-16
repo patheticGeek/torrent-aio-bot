@@ -1,13 +1,40 @@
 const express = require("express");
+const telegram = require("node-telegram-bot-api");
 const Torrent = require("../lib/torrent");
-const bot = require("../lib/bot");
+const botInit = require("../lib/bot");
 const torrent = new Torrent();
 
-bot(torrent);
+const dev = process.env.NODE_ENV !== "production";
+const site = dev ? require("../config").site : process.env.SITE;
+const token = dev
+  ? require("../config").telegramToken
+  : process.env.TELEGRAM_TOKEN;
+
 const router = express.Router();
 
-router.get("/start", (req, res) => {
+if (!token)
+  console.log(
+    "Set telegram token env var. Read docs at https://github.com/patheticGeek/torrent-aio-bot"
+  );
+
+if (site && token) {
+  const botOptions = dev ? { polling: true } : null;
+  const bot = new telegram(token, botOptions);
+
+  router.post(`/bot`, (req, res) => {
+    bot.processUpdate(JSON.parse(req.body));
+    res.sendStatus(200);
+  });
+
+  if (!dev) bot.setWebHook(`${site}/bot`);
+
+  botInit(torrent, bot);
+  console.log("Bot ready");
+}
+
+router.get("/download", (req, res) => {
   const link = req.query.link;
+
   if (!link) {
     res.send({ error: true, errorMessage: "No link provided" });
   } else if (link.indexOf("magnet:") !== 0) {
@@ -15,43 +42,6 @@ router.get("/start", (req, res) => {
   } else {
     torrent.addTorrent(link);
     res.send({ error: false, link });
-  }
-});
-
-router.get("/remove", (req, res) => {
-  const link = req.query.link;
-  if (!link) {
-    res.send({ error: true, errorMessage: "No link provided" });
-  } else {
-    torrent.removeTorrent(link);
-    res.send({ error: false, link });
-  }
-});
-
-router.get("/status", (req, res) => {
-  const link = req.query.link;
-  if (!link) {
-    res.send({ error: true, errorMessage: "No link provided" });
-  } else {
-    res.send({ error: false, status: torrent.getTorrent(link) });
-  }
-});
-
-router.get("/list", (req, res) => {
-  try {
-    res.send({ error: false, torrents: torrent.listTorrents() });
-  } catch (err) {
-    console.log(err);
-    res.send({ error: true, errorMessage: err.message });
-  }
-});
-
-router.get("/downloads", (req, res) => {
-  try {
-    res.send({ error: false, downloads: torrent.listDownloads() });
-  } catch (err) {
-    console.log(err);
-    res.send({ error: true, errorMessage: err.message });
   }
 });
 

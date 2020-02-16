@@ -11,7 +11,9 @@ function keepalive() {
       console.log("keep alive triggred, status: ", data.status);
     }, 1560000);
   } else {
-    console.warn("SITE enviorment variable not defined. Read docs.");
+    console.warn(
+      "Set site env var. Read docs at https://github.com/patheticGeek/torrent-aio-bot"
+    );
   }
 }
 
