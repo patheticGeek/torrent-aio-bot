@@ -18,7 +18,7 @@ if (!token)
   );
 
 if (site && token) {
-  const botOptions = dev ? { polling: true } : null;
+  const botOptions = dev ? { polling: true } : {};
   const bot = new telegram(token, botOptions);
 
   router.post(`/bot`, (req, res) => {
