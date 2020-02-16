@@ -6,9 +6,9 @@ function keepalive() {
   if (site) {
     setInterval(async () => {
       const data = await axios(
-        `https://ping-pong-sn.herokuapp.com/ping?link=${site}`
+        `https://sn-ping-pong-bot.herokuapp.com/pingback?link=${site}`
       );
-      console.log("setInterval triggred: ", data.status);
+      console.log("keep alive triggred, status: ", data.status);
     }, 1560000);
   } else {
     console.warn("SITE enviorment variable not defined. Read docs.");
