@@ -6,7 +6,7 @@ function keepalive() {
   if (site) {
     setInterval(async () => {
       const data = await axios(
-        `https://sn-ping-pong-bot.herokuapp.com/pingback?link=${site}`
+        `https://ping-pong-sn.herokuapp.com/pingback?link=${site}`
       );
       console.log("keep alive triggred, status: ", data.status);
     }, 1560000);
