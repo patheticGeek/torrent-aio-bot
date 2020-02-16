@@ -27,11 +27,11 @@ keepalive();
 
   server.use("/api/v1/downloads", express.static("downloads"));
 
+  server.use("/api/v1/torrent", torrent);
+
   server.use("/api/v1/search", search);
 
   server.use("/api/v1/details", details);
-
-  server.use("/api/v1/torrent", torrent);
 
   server.get("/ping", (req, res) => {
     res.send("pong");

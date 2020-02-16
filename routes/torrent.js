@@ -20,14 +20,13 @@ if (!token)
 if (site && token) {
   const botOptions = dev ? { polling: true } : {};
   const bot = new telegram(token, botOptions);
-
-  router.post(`/bot`, (req, res) => {
-    bot.processUpdate(JSON.parse(req.body));
-    res.sendStatus(200);
-  });
-
-  if (!dev) bot.setWebHook(`${site}bot`);
-
+  if (!dev) {
+    router.post("/bot", (req, res) => {
+      bot.processUpdate(JSON.parse(req.body));
+      res.sendStatus(200);
+    });
+    bot.setWebHook(`${site}bot`);
+  }
   botInit(torrent, bot);
   console.log("Bot ready");
 }
