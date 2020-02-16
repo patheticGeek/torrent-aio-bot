@@ -26,7 +26,7 @@ if (site && token) {
     res.sendStatus(200);
   });
 
-  if (!dev) bot.setWebHook(`${site}/bot`);
+  if (!dev) bot.setWebHook(`${site}bot`);
 
   botInit(torrent, bot);
   console.log("Bot ready");
