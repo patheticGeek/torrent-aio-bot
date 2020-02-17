@@ -43,8 +43,27 @@ router.get("/download", (req, res) => {
   } else if (link.indexOf("magnet:") !== 0) {
     res.send({ error: true, errorMessage: "Link is not a magnet link" });
   } else {
-    torrent.addTorrent(link);
-    res.send({ error: false, link });
+    torrent.download(link, torrent =>
+      res.send({ error: false, link, infoHash: torrent.infoHash })
+    );
+  }
+});
+
+router.get("/status", (req, res) => {
+  const infoHash = req.query.infoHash;
+
+  if (!infoHash) {
+    res.send({ error: true, errorMessage: "No infoHash provided" });
+  } else {
+    res.send({ error: false, status: torrent.get(infoHash) });
+  }
+});
+
+router.get("/list", (req, res) => {
+  try {
+    res.json(torrent.downloads);
+  } catch (e) {
+    res.json({ error: true, message: e.message });
   }
 });
 

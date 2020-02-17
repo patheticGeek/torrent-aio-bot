@@ -2,6 +2,7 @@ const express = require("express");
 const next = require("next");
 const compression = require("compression");
 const bodyParser = require("body-parser");
+const serveIndex = require("serve-index");
 
 const humanTime = require("./utils/humanTime");
 const keepalive = require("./utils/keepalive");
@@ -27,8 +28,6 @@ keepalive();
   server.use(compression());
   server.use(bodyParser.json());
 
-  server.use("/api/v1/downloads", express.static("downloads"));
-
   server.use("/api/v1/torrent", torrent);
 
   server.use("/api/v1/search", search);
@@ -53,6 +52,12 @@ keepalive();
     const currStatus = await status();
     res.send(currStatus);
   });
+
+  server.use(
+    "/downloads",
+    express.static("downloads"),
+    serveIndex("downloads", { icons: true })
+  );
 
   server.all("*", (req, res) => {
     handle(req, res);
