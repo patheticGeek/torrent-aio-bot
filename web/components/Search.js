@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Input from "./Input";
 import SearchItem from "./SearchItem";
+import Router from "next/router";
 
 class Search extends Component {
   state = {
-    term: "chernobyl",
+    term: "",
     site: "piratebay",
     loading: false,
     error: false,
@@ -12,13 +13,20 @@ class Search extends Component {
     results: []
   };
 
+  componentDidMount = () => {
+    if (this.props.searchProps) {
+      this.setState({ ...this.props.searchProps });
+    }
+  };
+
   search = async e => {
     if (e) e.preventDefault();
     let { term, site } = this.state;
-    this.setState({ loading: true });
+    this.setState({ loading: true, results: [] });
     term = term.trim();
 
     if (term !== "") {
+      Router.replace(`/?site=${site}&term=${term}`);
       const res = await fetch("/api/v1/search/" + site + "?query=" + term);
       if (res.status !== 200) {
         this.setState({

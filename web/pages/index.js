@@ -1,12 +1,34 @@
 import React, { Component } from "react";
+import axios from "axios";
 import Search from "../components/Search";
 import Downloads from "../components/Downloads";
 
 class Index extends Component {
-  state = { nav: "search" };
+  state = { nav: "search", searchProps: null };
+
+  static getInitialProps = async ({ query }) => {
+    if (!query.term || !query.site || process.browser) return {};
+    let searchProps;
+    const api = process.env.SITE || "https://torrent-aio-bot.herokuapp.com";
+    const res = await axios(
+      `${api}/api/v1/search/${query.site}?query=${query.term}`
+    );
+    if (res.status !== 200) {
+      searchProps = {
+        query,
+        error: true,
+        errorMessage: "An error occured"
+      };
+    } else {
+      const data = res.data;
+      searchProps = { site: query.site, term: query.term, ...data };
+    }
+    return { searchProps };
+  };
 
   render() {
     const { nav } = this.state;
+    const { searchProps } = this.props;
 
     return (
       <>
@@ -36,7 +58,7 @@ class Index extends Component {
         </div>
         <main>
           <div className="content">
-            {nav === "search" && <Search />}
+            {nav === "search" && <Search searchProps={searchProps} />}
             {nav === "downloads" && <Downloads />}
           </div>
         </main>
