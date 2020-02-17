@@ -25,7 +25,11 @@ if (site && token) {
       bot.processUpdate(JSON.parse(req.body));
       res.sendStatus(200);
     });
-    bot.setWebHook(`${site}bot`);
+    bot.setWebHook(`${site}api/v1/torrent/bot`);
+  } else {
+    router.post("/bot", (req, res) => {
+      res.sendStatus(200);
+    });
   }
   botInit(torrent, bot);
   console.log("Bot ready");
