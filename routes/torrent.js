@@ -22,7 +22,7 @@ if (site && token) {
   const bot = new telegram(token, botOptions);
   if (!dev) {
     router.post("/bot", (req, res) => {
-      bot.processUpdate(JSON.parse(req.body));
+      bot.processUpdate(req.body);
       res.sendStatus(200);
     });
     bot.setWebHook(`${site}api/v1/torrent/bot`);

@@ -1,6 +1,7 @@
 const express = require("express");
 const next = require("next");
 const compression = require("compression");
+const bodyParser = require("body-parser");
 
 const humanTime = require("./utils/humanTime");
 const keepalive = require("./utils/keepalive");
@@ -24,6 +25,7 @@ keepalive();
   await app.prepare();
 
   server.use(compression());
+  server.use(bodyParser.json());
 
   server.use("/api/v1/downloads", express.static("downloads"));
 
