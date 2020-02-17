@@ -9,9 +9,9 @@ class Index extends Component {
   static getInitialProps = async ({ query }) => {
     if (!query.term || !query.site || process.browser) return {};
     let searchProps;
-    const api = process.env.SITE || "https://torrent-aio-bot.herokuapp.com";
+    const api = process.env.SITE || "https://torrent-aio-bot.herokuapp.com/";
     const res = await axios(
-      `${api}/api/v1/search/${query.site}?query=${query.term}`
+      `${api}api/v1/search/${query.site}?query=${query.term}`
     );
     if (res.status !== 200) {
       searchProps = {
