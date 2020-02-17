@@ -55,15 +55,34 @@ router.get("/status", (req, res) => {
   if (!infoHash) {
     res.send({ error: true, errorMessage: "No infoHash provided" });
   } else {
-    res.send({ error: false, status: torrent.get(infoHash) });
+    try {
+      res.send({ error: false, status: torrent.get(infoHash) });
+    } catch (e) {
+      res.send({ error: false, errorMessage: e.message });
+    }
+  }
+});
+
+router.get("/remove", (req, res) => {
+  const infoHash = req.query.infoHash;
+
+  if (!infoHash) {
+    res.send({ error: true, errorMessage: "No infoHash provided" });
+  } else {
+    try {
+      torrent.remove(infoHash);
+      res.send({ error: false });
+    } catch (e) {
+      res.send({ error: true, errorMessage: e.message });
+    }
   }
 });
 
 router.get("/list", (req, res) => {
   try {
-    res.json(torrent.downloads);
+    res.json({ error: false, torrents: Object.entries(torrent.downloads) });
   } catch (e) {
-    res.json({ error: true, message: e.message });
+    res.json({ error: true, errorMessage: e.message });
   }
 });
 

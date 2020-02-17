@@ -16,55 +16,33 @@ TODO after deploy:
 
 Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually
 
-## Bot commands -
-| Command                       |                                                                                Usage |
-| :---------------------------- | -----------------------------------------------------------------------------------: |
-| /start                        |                                                       Gives some info to get started |
-| /status                       |                          Gives status about the server such as disk space and uptime |
-| /uptime                       |                                                           Gives uptime of the server |
-| /diskinfo {path}              |                                                Gives the space available on the path |
-| /search {site} {query}        | Searches the site for given query. Site can be "piratebay", "1337x" or "limetorrent" |
-| /details {site} {link}        |                                           Gets the details of torrent on given link. |
-| /torrent start {magnet link}  |                                                       Starts the download of torrent |
-| /torrent remove {magnet link} |                                      Removes the torrent at the magnet link if added |
-| /torrent status {magnet link} |                                                          Gives the status of torrent |
-
 ## API Endpoints -
 
 prefix: /api/v1
 
 ### For downloading:
 
-| Endpoint           |    Params    |                                                              Return |
-| :----------------- | :----------: | ------------------------------------------------------------------: |
-| /torrent/start     | link: string |                { error: bool, link: string, errorMessage?: string } |
-| /torrent/list      |     none     |                  {error: bool, torrents: [ torrent, torrent, ... ]} |
-| /torrent/remove    | link: string |                { error: bool, errorMessage?: string, link: string } |
-| /torrent/status    | link: string | {link: string, error: bool, status: torrent, errorMessage?: string} |
-| /torrent/downloads |     none     |              error: bool, downloads: [{status: string, ...torrent}] |
+| Endpoint          |      Params      |                                                                Return |
+| :---------------- | :--------------: | --------------------------------------------------------------------: |
+| /torrent/download |   link: string   | { error: bool, link: string, infohash: string errorMessage?: string } |
+| /torrent/list     |       none       |                    {error: bool, torrents: [ torrent, torrent, ... ]} |
+| /torrent/remove   | infoHash: string |                  { error: bool, errorMessage?: string, link: string } |
+| /torrent/status   | infoHash: string |                 {error: bool, status: torrent, errorMessage?: string} |
 
 link is magnet uri of the torrent
 
 ```
-torrent: {
+torrent:  {
   infoHash: string,
   magnetURI: string,
-  name: string,
+  speed: string,
   downloaded: string,
   total: string,
   progress: number,
-  timeRemaining: string,
-  files: [ file, file, ... ]
-}
-
-file: {
-  name: string,
-  downloaded: string,
-  total: string,
-  progress: number,
-  done: bool,
-  path: string,
-  downloadLink: string
+  timeRemaining: number(in s),
+  redableTimeRemaining: string,
+  downloadLink: string,
+  status: string
 }
 ```
 
