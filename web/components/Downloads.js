@@ -107,7 +107,7 @@ class Downloads extends Component {
                   <div
                     style={{
                       height: "4px",
-                      width: torr.progress,
+                      width: `${torr.progress}%`,
                       backgroundColor: "var(--primary)"
                     }}
                   />
