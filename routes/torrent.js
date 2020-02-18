@@ -80,7 +80,10 @@ router.get("/remove", (req, res) => {
 
 router.get("/list", (req, res) => {
   try {
-    res.json({ error: false, torrents: Object.entries(torrent.downloads) });
+    res.json({
+      error: false,
+      torrents: Object.entries(torrent.downloads).map(val => val[1])
+    });
   } catch (e) {
     res.json({ error: true, errorMessage: e.message });
   }

@@ -16,6 +16,8 @@ TODO after deploy:
 
 Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually
 
+If you do not deploy with git clone search wont work downloading will still work
+
 ## API Endpoints -
 
 prefix: /api/v1

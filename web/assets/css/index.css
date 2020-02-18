@@ -405,6 +405,9 @@ body.dark .card {
   border-top-right-radius: 0.25rem;
   border-bottom: 1px solid var(--border-color);
 }
+.card .card-header > * {
+  margin: 0px;
+}
 .card .card-header.compact {
   padding: 0.825rem 1rem;
 }
