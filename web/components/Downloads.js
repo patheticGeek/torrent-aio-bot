@@ -98,7 +98,9 @@ class Downloads extends Component {
             {torrents.map(torr => (
               <div className="card" key={torr.infoHash}>
                 <div className="card-header compact d-flex space-between">
-                  <h3 style={{ lineBreak: "anywhere" }}>{torr.name}</h3>
+                  <h3 style={{ lineBreak: "anywhere", marginLeft: "8px" }}>
+                    {torr.name}
+                  </h3>
                   <div className="text-400 text-primary">
                     {torr.done ? "Done" : torr.redableTimeRemaining}
                   </div>
