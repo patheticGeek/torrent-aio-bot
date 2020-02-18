@@ -13,7 +13,7 @@ class Downloads extends Component {
 
   componentDidMount = () => {
     this.load();
-    this.downloadLoader = setInterval(this.load, 3000);
+    this.downloadLoader = setInterval(this.load, 1500);
   };
 
   componentWillUnmount = () => {
@@ -98,7 +98,7 @@ class Downloads extends Component {
             {torrents.map(torr => (
               <div className="card" key={torr.infoHash}>
                 <div className="card-header compact d-flex space-between">
-                  <h2>{torr.name}</h2>
+                  <h3 style={{ lineBreak: "anywhere" }}>{torr.name}</h3>
                   <div className="text-400 text-primary">
                     {torr.done ? "Done" : torr.redableTimeRemaining}
                   </div>
@@ -124,6 +124,10 @@ class Downloads extends Component {
                   <div className="d-flex space-between">
                     <div className="text-400">Downloaded: </div>
                     <div>{torr.downloaded}</div>
+                  </div>
+                  <div className="d-flex space-between">
+                    <div className="text-400">Speed: </div>
+                    <div>{torr.speed}</div>
                   </div>
                   {torr.done && (
                     <a href={torr.downloadLink} className="btn success">
