@@ -4,7 +4,7 @@ import Search from "../components/Search";
 import Downloads from "../components/Downloads";
 
 class Index extends Component {
-  state = { nav: "downloads", searchProps: null };
+  state = { nav: "search", searchProps: null };
 
   static getInitialProps = async ({ query }) => {
     if (!query.term || !query.site || process.browser) return {};
