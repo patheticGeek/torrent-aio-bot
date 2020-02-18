@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Search from "../components/Search";
 import Downloads from "../components/Downloads";
+import Router from "next/router";
 
 class Index extends Component {
   state = { nav: "search", searchProps: null };
@@ -45,7 +46,10 @@ class Index extends Component {
                 <span className="tablet-desktop-only ml-05">Search</span>
               </li>
               <li
-                onClick={() => this.setState({ nav: "downloads" })}
+                onClick={() => {
+                  Router.push("/");
+                  this.setState({ nav: "downloads" });
+                }}
                 className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${
                   nav === "downloads" ? " border-bottom-1" : ""
                 }`}
