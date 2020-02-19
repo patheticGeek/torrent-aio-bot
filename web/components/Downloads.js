@@ -46,8 +46,9 @@ class Downloads extends Component {
     } else {
       const resp = await fetch(`/api/v1/torrent/download?link=${link}`);
       if (resp.status === 200) {
-        this.setState({ adding: false });
+        this.setState({ adding: false, link: "" });
       } else {
+        console.log("resp", resp);
         this.setState({
           adding: false,
           addingError: "Cannot connect to server"
@@ -98,7 +99,7 @@ class Downloads extends Component {
             {torrents.map(torr => (
               <div className="card" key={torr.infoHash}>
                 <div className="card-header compact d-flex space-between">
-                  <h3 style={{ lineBreak: "anywhere", marginLeft: "8px" }}>
+                  <h3 style={{ lineBreak: "anywhere", marginRight: "8px" }}>
                     {torr.name}
                   </h3>
                   <div className="text-400 text-primary">

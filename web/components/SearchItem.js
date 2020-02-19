@@ -18,6 +18,19 @@ class SearchItem extends Component {
     this.setState({ loading: false, loaded: true });
   };
 
+  copyToClipboard = () => {
+    const str = this.state.torrent.downloadLink;
+    const el = document.createElement("textarea");
+    el.value = str;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+  };
+
   render() {
     const { result } = this.props;
     const { loading, loaded, torrent } = this.state;
@@ -47,6 +60,12 @@ class SearchItem extends Component {
               ))}
               <a href={torrent.downloadLink} className="btn warning m-0 mt-1">
                 Download
+              </a>
+              <a
+                onClick={this.copyToClipboard}
+                className="btn primary m-0 ml-1 mt-1"
+              >
+                Copy link
               </a>
             </div>
           )}
