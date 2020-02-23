@@ -31,6 +31,7 @@ class Downloads extends Component {
         error: true,
         errorMessage: "Cannot connect to server"
       });
+      this.downloadLoader = null;
     }
   };
 
@@ -97,7 +98,7 @@ class Downloads extends Component {
         {torrents && (
           <div className="d-flex-column mt-1">
             {torrents.map(torr => (
-              <div className="card" key={torr.infoHash}>
+              <div className="card" key={torr.magnetURI}>
                 <div className="card-header compact d-flex space-between">
                   <h3 style={{ lineBreak: "anywhere", marginRight: "8px" }}>
                     {torr.name}
