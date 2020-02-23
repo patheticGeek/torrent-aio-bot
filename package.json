@@ -42,6 +42,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "serve-index": "^1.9.1",
-    "webtorrent": "^0.107.17"
+    "webtorrent": "^0.107.17",
+    "zip-a-folder": "^0.0.12"
   }
 }
