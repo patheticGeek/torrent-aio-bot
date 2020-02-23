@@ -1,7 +1,5 @@
 # Torrent all-in-one bot
 
-## Some breaking changes are about to cum as i am rewriting some parts 
-
 Lorem ipsum i am too lazy figure what it does yourself
 
 You might be lazy too so here ya go:
@@ -24,18 +22,17 @@ prefix: /api/v1
 
 ### For downloading:
 
-| Endpoint          |      Params      |                                                                Return |
-| :---------------- | :--------------: | --------------------------------------------------------------------: |
-| /torrent/download |   link: string   | { error: bool, link: string, infohash: string errorMessage?: string } |
-| /torrent/list     |       none       |                    {error: bool, torrents: [ torrent, torrent, ... ]} |
-| /torrent/remove   | infoHash: string |                  { error: bool, errorMessage?: string, link: string } |
-| /torrent/status   | infoHash: string |                 {error: bool, status: torrent, errorMessage?: string} |
+| Endpoint          |    Params    |                                                                Return |
+| :---------------- | :----------: | --------------------------------------------------------------------: |
+| /torrent/download | link: string | { error: bool, link: string, infohash: string errorMessage?: string } |
+| /torrent/list     |     none     |                    {error: bool, torrents: [ torrent, torrent, ... ]} |
+| /torrent/remove   | link: string |                  { error: bool, errorMessage?: string, link: string } |
+| /torrent/status   | link: string |                 {error: bool, status: torrent, errorMessage?: string} |
 
 link is magnet uri of the torrent
 
 ```
 torrent:  {
-  infoHash: string,
   magnetURI: string,
   speed: string,
   downloaded: string,
@@ -44,7 +41,8 @@ torrent:  {
   timeRemaining: number(in s),
   redableTimeRemaining: string,
   downloadLink: string,
-  status: string
+  status: string,
+  done: bool
 }
 ```
 
