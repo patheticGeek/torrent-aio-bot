@@ -26,7 +26,7 @@ Set the enviorment variables. Go to heroku dashboard open the app then go to Set
 >
 > If you do not deploy with git clone and then search wont work downloading will still work.
 
-## API Endpoints -
+## API Endpoints
 
 prefix: /api/v1
 
