@@ -6,15 +6,25 @@ You might be lazy too so here ya go:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
-TODO after deploy:
-1. Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes.
-2. Set the enviorment variables. Go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
-3. Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
-4. Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+## TODO after deploy
 
-Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually
+### Minimum required to get torrent download working:
 
-If you do not deploy with git clone search wont work downloading will still work
+Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
+
+### To start a torrent bot:
+
+Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+
+### To get search working:
+
+Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes.
+
+Set the enviorment variables. Go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
+
+> Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually.
+>
+> If you do not deploy with git clone and then search wont work downloading will still work.
 
 ## API Endpoints -
 
@@ -38,7 +48,7 @@ torrent:  {
   downloaded: string,
   total: string,
   progress: number,
-  timeRemaining: number(in s),
+  timeRemaining: number,
   redableTimeRemaining: string,
   downloadLink: string,
   status: string,
@@ -57,8 +67,6 @@ query is what you want to search for or the link of the torrent page
 site is the link to homepage of proxy to use must have a trailing '/'
 
 ```
-site: piratebay | 1337x | limetorrent
-
 result: {
   name: string,
   link: string,
@@ -73,3 +81,5 @@ torrent: {
   details: [ { infoTitle: string, infoText: string } ]
 }
 ```
+
+sites available piratebay, 1337x, limetorrent
