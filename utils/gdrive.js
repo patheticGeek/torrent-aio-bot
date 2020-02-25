@@ -15,16 +15,16 @@ const SCOPES = [
 ];
 
 if (!CLIENT_ID) {
-  console.log("CLIENT_ID env not set. Not uploading to gdrive.\n");
+  console.log("CLIENT_ID env not set. Not uploading to gdrive.");
 }
 if (!CLIENT_SECRET) {
-  console.log("CLIENT_SECRET env not set. Not uploading to gdrive.\n");
+  console.log("CLIENT_SECRET env not set. Not uploading to gdrive.");
 }
 if (!AUTH_CODE) {
-  console.log("AUTH_CODE env not set.\n");
+  console.log("AUTH_CODE env not set.");
 }
 if (!TOKEN) {
-  console.log("TOKEN env not set.\n");
+  console.log("TOKEN env not set.");
 }
 if (CLIENT_ID && CLIENT_SECRET && AUTH_CODE && TOKEN) {
   console.log("Gdrive config OK.");
