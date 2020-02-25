@@ -26,6 +26,19 @@ Set the enviorment variables. Go to heroku dashboard open the app then go to Set
 >
 > If you do not deploy with git clone and then search wont work downloading will still work.
 
+### To get gdrive upload:
+
+1. Go to https://developers.google.com/drive/api/v3/quickstart/nodejs and click on Enable the Drive API
+   copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
+2. Start download of a torrent when its complete wait a minute and in logs (open heroku project goto More > View Logs) and youll see a line with Get auth code from here. Copy the url paste it and login with your google account. At end you will get a code copy it and set another env named AUTH_CODE.
+3. Start another torrent download after it finished wait for a minute youll get a value of token in logs copy that including curly brackets and set value of another env named TOKEN to it.
+
+Finally, download a torrent and wait for some time for it to upload the torrent to gdrive and you can find the zip of torrent in home of drive
+
+> Use this torrent for testing or when downloading to setup drive it is well seeded and downloads in ~10s
+>
+> magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny
+
 ## API Endpoints
 
 prefix: /api/v1
