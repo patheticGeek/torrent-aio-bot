@@ -58,6 +58,7 @@ async function authorize() {
       return oAuth2Client;
     });
   } else if (AUTH_CODE && TOKEN) {
+    const parsedToken = JSON.parse(TOKEN);
     oAuth2Client.setCredentials(parsedToken);
     return oAuth2Client;
   } else {
