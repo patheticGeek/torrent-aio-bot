@@ -1,13 +1,17 @@
 const puppeteer = require("puppeteer");
+const PIRATEBAY_SITE =
+  process.env.PIRATEBAY_SITE ||
+  require("../../config").PIRATEBAY_SITE ||
+  "https://thepiratebay.org/search/{term}";
 
-async function search(search, site = "https://bayunblocked.net/") {
+async function search(search, site = PIRATEBAY_SITE) {
   try {
     var browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox"]
     });
     var page = await browser.newPage();
-    await page.goto(site + "s/?q=" + search);
+    await page.goto(site.replace("{term}", search));
 
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("div#SearchResults");
