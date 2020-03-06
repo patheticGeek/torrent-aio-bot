@@ -135,7 +135,20 @@ async function uploadFolder(path, parentId) {
     }
   });
 
+  // await all uploads
   await Promise.all(uploads);
+
+  // return the gdrive link
+  return `https://drive.google.com/drive/folders/${folderId}`;
 }
 
-module.exports = { uploadFolder, uploadFile };
+async function uploadWithLog(path, parentId) {
+  const intr = path.split("/");
+  intr[intr.length - 1] = "gdrive.txt";
+  const gdriveText = intr.join("/");
+  fs.writeFileSync(gdriveText, "Upload started\n");
+  const url = await uploadFolder(path, parentId);
+  fs.appendFileSync(gdriveText, `Gdrive url: ${url}`);
+}
+
+module.exports = { uploadFolder, uploadFile, uploadWithLog };
