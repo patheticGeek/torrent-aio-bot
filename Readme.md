@@ -14,13 +14,12 @@ Set a variable with key "SITE" and value is the link of your site. eg. "https://
 
 ### To start a torrent bot:
 
-Set a variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+Set a enviorment variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+To set a enviorment variable go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
 
 ### To get search working:
 
 Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes.
-
-Set the enviorment variables. Go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
 
 > Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually.
 >
@@ -30,10 +29,10 @@ Set the enviorment variables. Go to heroku dashboard open the app then go to Set
 
 1. Go to https://developers.google.com/drive/api/v3/quickstart/nodejs and click on Enable the Drive API
    copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
-2. Start download of a torrent when its complete wait a minute and in logs (open heroku project goto More > View Logs) and youll see a line with Get auth code from here. Copy the url paste it and login with your google account. At end you will get a code copy it and set another env named AUTH_CODE.
-3. Start another torrent download after it finished wait for a minute youll get a value of token in logs copy that including curly brackets and set value of another env named TOKEN to it.
-
-Finally, download a torrent and wait for some time for it to upload the torrent to gdrive and you can find the zip of torrent in home of drive
+2. Let the process restart 2 time. Then when it starts a link will be logged (Go to more > view logs) visit the link and signin with the desired acc. In end you will get a auth code copy it and set a env var AUTH_CODE with value of it.
+3. Let the process restart one more time. This time it will log a token, copy its value including { } and set a env var named TOKEN with that value.
+4. If you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder.
+5. Youre good to go.
 
 > Use this torrent for testing or when downloading to setup drive it is well seeded and downloads in ~10s
 >
@@ -41,7 +40,7 @@ Finally, download a torrent and wait for some time for it to upload the torrent 
 
 ## API Endpoints
 
-prefix: /api/v1
+prefix: https://\<project name>.herokuapp.com/api/v1
 
 ### For downloading:
 
