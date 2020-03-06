@@ -1,16 +1,19 @@
 const puppeteer = require("puppeteer");
+const LIMETORRENT_SITE =
+  process.env.LIMETORRENT_SITE ||
+  "https://limetorrents.at/search?search={term}";
 
-async function search(search, site = "https://www.limetorrents.info/") {
+async function search(search, site = LIMETORRENT_SITE) {
   try {
     var browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox"]
     });
     await browser.userAgent(
-      "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-cn; GT-I9500 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko)Version/4.0 MQQBrowser/5.0 QQ-URL-Manager Mobile Safari/537.36"
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"
     );
     var page = await browser.newPage();
-    await page.goto(site + "search/all/" + search);
+    await page.goto(site.replace("{term}", search));
 
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("table.table2 > tbody");

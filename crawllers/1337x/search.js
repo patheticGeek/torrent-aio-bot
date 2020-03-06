@@ -1,13 +1,15 @@
 const puppeteer = require("puppeteer");
+const O337X_SITE =
+  process.env.O337X_SITE || "https://www.1337x.to/search/{term}/1/";
 
-async function search(search, site = "https://1337x.to/") {
+async function search(search, site = O337X_SITE) {
   try {
     var browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox"]
     });
     var page = await browser.newPage();
-    await page.goto(site + "search/" + search + "/1/");
+    await page.goto(site.replace("{term}", search));
 
     var searchResults = await page.evaluate(async () => {
       var searchResults = document.querySelector("tbody");
