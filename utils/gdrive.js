@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { google } = require("googleapis");
 const dev = process.env.NODE_ENV !== "production";
-const { CLIENT_ID, CLIENT_SECRET, TOKEN, AUTH_CODE } = dev
+const { CLIENT_ID, CLIENT_SECRET, TOKEN, AUTH_CODE, GDRIVE_PARENT_FOLDER } = dev
   ? require("../config").creds
   : process.env;
 let parsedToken = null;
@@ -26,14 +26,20 @@ if (!AUTH_CODE) {
 if (!TOKEN) {
   console.log("TOKEN env not set.");
 }
-if (CLIENT_ID && CLIENT_SECRET && AUTH_CODE && TOKEN) {
-  console.log("Gdrive config OK.");
+if (GDRIVE_PARENT_FOLDER) {
+  console.log(`GDRIVE_PARENT_FOLDER set to ${GDRIVE_PARENT_FOLDER}`);
 }
 
-async function uploadToDrive(path) {
-  if (!CLIENT_ID || !CLIENT_SECRET) return;
-  const auth = await authorize();
-  if (auth) await uploadFile(auth, path);
+let auth = null;
+let drive = null;
+
+if (CLIENT_ID && CLIENT_SECRET) {
+  authorize().then(a => {
+    if (!a) return;
+    auth = a;
+    drive = google.drive({ version: "v3", auth });
+    console.log("Gdrive client up");
+  });
 }
 
 async function authorize() {
@@ -52,9 +58,13 @@ async function authorize() {
     return null;
   } else if (AUTH_CODE && !TOKEN) {
     return oAuth2Client.getToken(AUTH_CODE, (err, token) => {
-      if (err) return console.error("Error retrieving access token", err);
+      if (err) {
+        console.error("Error retrieving access token\n", err);
+        return null;
+      }
       oAuth2Client.setCredentials(token);
-      console.log("Set TOKEN env to: ", JSON.stringify(token));
+      if (!TOKEN) console.log("Set TOKEN env to: ", JSON.stringify(token));
+      else console.log("Gdrive config OK.");
       return oAuth2Client;
     });
   } else if (AUTH_CODE && TOKEN) {
@@ -66,30 +76,66 @@ async function authorize() {
   }
 }
 
-async function uploadFile(auth, path) {
-  const drive = google.drive({ version: "v3", auth });
-  const intr = path.split("/");
-  const name = intr[intr.length - 1];
-  console.log(`Uploading file to gdrive: ${name}`);
-  var media = {
-    body: fs.createReadStream(path)
-  };
-  drive.files.create(
-    {
-      resource: { name },
-      media: media,
-      fields: "id"
-    },
-    function(err, file) {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log(
-          `Uploaded ${name} , link: https://drive.google.com/file/d/${file.data.id}/view?usp=sharing`
-        );
-      }
-    }
-  );
+function createFolder(name, parentId) {
+  return new Promise((resolve, reject) => {
+    var fileMetadata = {
+      name, mimeType: "application/vnd.google-apps.folder", parents: parentId ? [parentId] : null
+    }; // prettier-ignore
+    drive.files.create(
+      {
+        resource: fileMetadata,
+        fields: "id"
+      },
+      (err, file) => (err ? reject(err) : resolve(file))
+    );
+  });
 }
 
-module.exports = uploadToDrive;
+function uploadFile(name, path, parentId) {
+  return new Promise((resolve, reject) => {
+    var media = { body: fs.createReadStream(path) };
+    drive.files.create(
+      { resource: { name, parents: parentId ? [parentId] : null }, media: media, fields: "id" },
+      (err, file) => (err ? reject(err) : resolve(file))
+    ); //prettier-ignore
+  });
+}
+
+async function uploadFolder(path, parentId) {
+  const intr = path.split("/");
+  const name = intr[intr.length - 1];
+  console.log(`Uploading folder to gdrive: ${name}`);
+  if (!fs.existsSync(path)) {
+    // Check if path exists
+    console.log(`Path ${path} does not exists`);
+    return;
+  }
+
+  //make a folder in gdrive
+  const folder = await createFolder(name, parentId || GDRIVE_PARENT_FOLDER);
+  const folderId = folder.data.id;
+
+  // get list of folders contents
+  const contents = fs.readdirSync(path, { withFileTypes: true });
+  const uploads = contents.map(val => {
+    const name = val.name;
+    const isDir = val.isDirectory();
+    const isFile = val.isFile();
+
+    console.log(`Name: ${name}, isDir: ${isDir}, isFile: ${isFile}`);
+
+    // if dir upload dir recursively
+    // if file upload the file
+    if (isDir) {
+      return uploadFolder(`${path}/${name}`, folderId);
+    } else if (isFile) {
+      return uploadFile(name, `${path}/${name}`, folderId);
+    } else {
+      return null;
+    }
+  });
+
+  await Promise.all(uploads);
+}
+
+module.exports = { uploadFolder, uploadFile };
