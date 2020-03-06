@@ -15,7 +15,7 @@ class Search extends Component {
 
   componentDidMount = () => {
     if (this.props.searchProps) {
-      this.setState({ ...this.props.searchProps });
+      this.setState({ ...this.props.searchProps }, this.search);
     }
   };
 
