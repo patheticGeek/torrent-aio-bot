@@ -1,18 +1,13 @@
 const fs = require("fs");
 const { google } = require("googleapis");
 const dev = process.env.NODE_ENV !== "production";
-const { CLIENT_ID, CLIENT_SECRET, TOKEN, AUTH_CODE, GDRIVE_PARENT_FOLDER } = dev
-  ? require("../config").creds
-  : process.env;
+const { CLIENT_ID, CLIENT_SECRET, TOKEN, AUTH_CODE, GDRIVE_PARENT_FOLDER } = dev ? require("../config").creds : process.env;
 let parsedToken = null;
 if (TOKEN) {
   parsedToken = JSON.parse(TOKEN);
 }
 
-const SCOPES = [
-  "https://www.googleapis.com/auth/drive.metadata.readonly",
-  "https://www.googleapis.com/auth/drive.file"
-];
+const SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.file"];
 
 if (!CLIENT_ID) {
   console.log("CLIENT_ID env not set. Not uploading to gdrive.");
@@ -43,11 +38,7 @@ if (CLIENT_ID && CLIENT_SECRET) {
 }
 
 async function authorize() {
-  const oAuth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    "urn:ietf:wg:oauth:2.0:oob"
-  );
+  const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, "urn:ietf:wg:oauth:2.0:oob");
 
   if (!AUTH_CODE) {
     const authUrl = oAuth2Client.generateAuthUrl({

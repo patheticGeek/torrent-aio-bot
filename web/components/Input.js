@@ -5,12 +5,7 @@ function Input({ label, labelProps, wrapperClass, onChange, id, ...props }) {
   return (
     <div className={`form-group ${wrapperClass ? wrapperClass : ""}`}>
       <label htmlFor={id}>{label}</label>
-      <input
-        className="form-control"
-        id={id}
-        onChange={e => onChange(e.target.value)}
-        {...props}
-      />
+      <input className="form-control" id={id} onChange={e => onChange(e.target.value)} {...props} />
     </div>
   );
 }

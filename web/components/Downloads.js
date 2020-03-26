@@ -59,14 +59,7 @@ class Downloads extends Component {
   };
 
   render() {
-    const {
-      link,
-      adding,
-      addingError,
-      torrents,
-      error,
-      errorMessage
-    } = this.state;
+    const { link, adding, addingError, torrents, error, errorMessage } = this.state;
 
     return (
       <>
@@ -82,14 +75,8 @@ class Downloads extends Component {
             onChange={link => this.setState({ link })}
             required
           />
-          {addingError !== "" && (
-            <div className="text-danger">{addingError}</div>
-          )}
-          <button
-            disabled={adding}
-            className={`btn primary${adding ? " loading" : ""}`}
-            type="submit"
-          >
+          {addingError !== "" && <div className="text-danger">{addingError}</div>}
+          <button disabled={adding} className={`btn primary${adding ? " loading" : ""}`} type="submit">
             Add
           </button>
         </form>
@@ -100,12 +87,8 @@ class Downloads extends Component {
             {torrents.map(torr => (
               <div className="card" key={torr.magnetURI}>
                 <div className="card-header compact d-flex space-between">
-                  <h3 style={{ lineBreak: "anywhere", marginRight: "8px" }}>
-                    {torr.name}
-                  </h3>
-                  <div className="text-400 text-primary">
-                    {torr.done ? "Done" : torr.redableTimeRemaining}
-                  </div>
+                  <h3 style={{ lineBreak: "anywhere", marginRight: "8px" }}>{torr.name}</h3>
+                  <div className="text-400 text-primary">{torr.done ? "Done" : torr.redableTimeRemaining}</div>
                 </div>
                 {torr.progress !== 100 && (
                   <div

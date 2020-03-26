@@ -6,9 +6,7 @@ class SearchItem extends Component {
   loadDetails = async () => {
     this.setState({ loading: true });
     const { result, site } = this.props;
-    const res = await fetch(
-      "/api/v1/details/" + site + "?query=" + result.link
-    );
+    const res = await fetch("/api/v1/details/" + site + "?query=" + result.link);
     if (res.status !== 200) {
       this.setState({ error: true, errorMessage: "Cannot connect to site" });
     } else {
@@ -42,11 +40,7 @@ class SearchItem extends Component {
           <div className="text-primary text-400">Seeds: {result.seeds}</div>
           <div className="text-400">{result.details}</div>
           {!loaded && (
-            <button
-              onClick={this.loadDetails}
-              disabled={loading}
-              className={`btn primary${loading ? " loading" : ""}`}
-            >
+            <button onClick={this.loadDetails} disabled={loading} className={`btn primary${loading ? " loading" : ""}`}>
               Load details
             </button>
           )}
@@ -61,10 +55,7 @@ class SearchItem extends Component {
               <a href={torrent.downloadLink} className="btn warning m-0 mt-1">
                 Download
               </a>
-              <a
-                onClick={this.copyToClipboard}
-                className="btn primary m-0 ml-1 mt-1"
-              >
+              <a onClick={this.copyToClipboard} className="btn primary m-0 ml-1 mt-1">
                 Copy link
               </a>
             </div>

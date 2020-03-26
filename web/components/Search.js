@@ -52,12 +52,7 @@ class Search extends Component {
         <form onSubmit={this.search}>
           <div className="form-group">
             <label htmlFor="site">Site</label>
-            <select
-              className="form-control"
-              id="site"
-              name="site"
-              onChange={this.handleSelect}
-            >
+            <select className="form-control" id="site" name="site" onChange={this.handleSelect}>
               <option value="piratebay">Piratebay</option>
               <option value="limetorrent">Limetorrents</option>
               <option value="1337x">1337x</option>
@@ -72,21 +67,13 @@ class Search extends Component {
             onChange={term => this.setState({ term })}
             required
           />
-          <button
-            disabled={loading}
-            className={`btn primary${loading ? " loading" : ""}`}
-            type="submit"
-          >
+          <button disabled={loading} className={`btn primary${loading ? " loading" : ""}`} type="submit">
             Search
           </button>
         </form>
         <div className="d-flex-column mv-1">
           {error && <div className="text-danger">{errorMessage}</div>}
-          {results &&
-            results.length > 0 &&
-            results.map(result => (
-              <SearchItem site={site} result={result} key={result.link} />
-            ))}
+          {results && results.length > 0 && results.map(result => <SearchItem site={site} result={result} key={result.link} />)}
         </div>
       </>
     );
