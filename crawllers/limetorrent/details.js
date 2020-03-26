@@ -14,8 +14,8 @@ async function details(link) {
 
     var torrentDetails = await page.evaluate(async () => {
       var detailsFrame = document.querySelector("div#maincontentrouter > div#content");
-      var title = detailsFrame.querySelectorAll("a.csprite_dltorrent")[2].title;
-      var downloadLink = detailsFrame.querySelectorAll("a.csprite_dltorrent")[2].href;
+      var title = detailsFrame.querySelector("h1").innerText;
+      var downloadLink = detailsFrame.querySelectorAll("a.csprite_dltorrent")[0].href;
       var info = "";
 
       var infoTitles = detailsFrame.querySelectorAll("div.torrentinfo > table > tbody > tr > td:nth-of-type(1)");
