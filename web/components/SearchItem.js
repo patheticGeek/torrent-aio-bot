@@ -1,23 +1,25 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class SearchItem extends Component {
-  state = { loading: false, loaded: false, torrent: null };
+function SearchItem({ result, site }) {
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState({});
 
-  loadDetails = async () => {
-    this.setState({ loading: true });
-    const { result, site } = this.props;
+  const loadDetails = async () => {
+    setLoading(true);
+
     const res = await fetch("/api/v1/details/" + site + "?query=" + result.link);
     if (res.status !== 200) {
-      this.setState({ error: true, errorMessage: "Cannot connect to site" });
+      setResponse({ error: true, errorMessage: "Cannot connect to site" });
     } else {
       const response = await res.json();
-      this.setState({ ...response });
+      setResponse({ ...response });
     }
-    this.setState({ loading: false, loaded: true });
+
+    setLoading(false);
   };
 
-  copyToClipboard = () => {
-    const str = this.state.torrent.downloadLink;
+  const copyToClipboard = () => {
+    const str = response.torrent.downloadLink;
     const el = document.createElement("textarea");
     el.value = str;
     el.setAttribute("readonly", "");
@@ -29,41 +31,37 @@ class SearchItem extends Component {
     document.body.removeChild(el);
   };
 
-  render() {
-    const { result } = this.props;
-    const { loading, loaded, torrent } = this.state;
-
-    return (
-      <div className="card">
-        <div className="card-body">
-          <h2>{result.name}</h2>
-          <div className="text-primary text-400">Seeds: {result.seeds}</div>
-          <div className="text-400">{result.details}</div>
-          {!loaded && (
-            <button onClick={this.loadDetails} disabled={loading} className={`btn primary${loading ? " loading" : ""}`}>
-              Load details
-            </button>
-          )}
-          {torrent && (
-            <div className="mt-1">
-              {torrent.details.map(({ infoText, infoTitle }, i) => (
-                <div className="d-flex space-between" key={i}>
-                  <div className="text-400">{infoTitle}</div>
-                  <div className="text-300">{infoText}</div>
-                </div>
-              ))}
-              <a href={torrent.downloadLink} className="btn warning m-0 mt-1">
-                Download
-              </a>
-              <a onClick={this.copyToClipboard} className="btn primary m-0 ml-1 mt-1">
-                Copy link
-              </a>
-            </div>
-          )}
-        </div>
+  return (
+    <div className="card">
+      <div className="card-body">
+        <h2>{result.name}</h2>
+        <div className="text-primary text-400">Seeds: {result.seeds}</div>
+        <div className="text-400">{result.details}</div>
+        {!response.torrent && (
+          <button onClick={loadDetails} disabled={loading} className={`btn primary${loading ? " loading" : ""}`}>
+            Load details
+          </button>
+        )}
+        {response.error && <div className="text-danger">{response.errorMessage}</div>}
+        {response.torrent && (
+          <div className="mt-1">
+            {response.torrent.details.map(({ infoText, infoTitle }, i) => (
+              <div className="d-flex space-between" key={i}>
+                <div className="text-400">{infoTitle}</div>
+                <div className="text-300">{infoText}</div>
+              </div>
+            ))}
+            <a href={response.torrent.downloadLink} className="btn warning m-0 mt-1">
+              Download
+            </a>
+            <a onClick={copyToClipboard} className="btn primary m-0 ml-1 mt-1">
+              Copy link
+            </a>
+          </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default SearchItem;
