@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 function Picker({ label, labelProps, wrapperClass, onChange, id, options, ...props }) {
-  const [value, setValue] = useState("");
-
   return (
     <div className={`form-group${wrapperClass ? ` ${wrapperClass}` : ""}`}>
       <label htmlFor={id} {...labelProps}>
         {label}
       </label>
-      <select value={value} className="form-control" id={id} onChange={e => onChange(e.target.value)} {...props}>
+      <select className="form-control" id={id} onChange={e => onChange(e.target.value)} {...props}>
         <option>Select one</option>
         {options &&
           options.map(opt => (
-            <option value={opt.value} key={opt.value} onClick={e => setValue(e.target.value)}>
+            <option value={opt.value} key={opt.value}>
               {opt.name}
             </option>
           ))}
