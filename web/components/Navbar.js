@@ -1,8 +1,7 @@
 import React from "react";
 import NightModeToggle from "./NightModeToggle";
-import "../assets/css/navbar.css";
 
-export default function Navbar() {
+function Navbar() {
   return (
     <div className="nav">
       <div className="content">
@@ -16,3 +15,5 @@ export default function Navbar() {
     </div>
   );
 }
+
+export default Navbar;
