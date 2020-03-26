@@ -13,28 +13,19 @@ async function details(link) {
     await page.goto(link);
 
     var torrentDetails = await page.evaluate(async () => {
-      var detailsFrame = document.querySelector(
-        "div#maincontentrouter > div#content"
-      );
+      var detailsFrame = document.querySelector("div#maincontentrouter > div#content");
       var title = detailsFrame.querySelectorAll("a.csprite_dltorrent")[2].title;
-      var downloadLink = detailsFrame.querySelectorAll("a.csprite_dltorrent")[2]
-        .href;
+      var downloadLink = detailsFrame.querySelectorAll("a.csprite_dltorrent")[2].href;
       var info = "";
 
-      var infoTitles = detailsFrame.querySelectorAll(
-        "div.torrentinfo > table > tbody > tr > td:nth-of-type(1)"
-      );
-      var infoTexts = detailsFrame.querySelectorAll(
-        "div.torrentinfo > table > tbody > tr > td:nth-of-type(2)"
-      );
+      var infoTitles = detailsFrame.querySelectorAll("div.torrentinfo > table > tbody > tr > td:nth-of-type(1)");
+      var infoTexts = detailsFrame.querySelectorAll("div.torrentinfo > table > tbody > tr > td:nth-of-type(2)");
       var i = 0;
       var details = [];
 
       details.push({
         infoTitle: "Seeders",
-        infoText: detailsFrame
-          .querySelector("#content > span.greenish")
-          .innerText.replace("Seeders : ", "")
+        infoText: detailsFrame.querySelector("#content > span.greenish").innerText.replace("Seeders : ", "")
       });
       infoTitles.forEach(text => {
         details.push({
@@ -53,7 +44,7 @@ async function details(link) {
     return torrentDetails;
   } catch (err) {
     console.log(err);
-    return { error: true, message: "Runtime error occured" };
+    return { error: true, errorMessage: "Runtime error occured" };
   }
 }
 

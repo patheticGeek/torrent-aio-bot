@@ -1,7 +1,5 @@
 const puppeteer = require("puppeteer");
-const LIMETORRENT_SITE =
-  process.env.LIMETORRENT_SITE ||
-  "https://limetorrents.at/search?search={term}";
+const LIMETORRENT_SITE = process.env.LIMETORRENT_SITE || "https://limetorrents.at/search?search={term}";
 
 async function search(search, site = LIMETORRENT_SITE) {
   try {
@@ -31,12 +29,8 @@ async function search(search, site = LIMETORRENT_SITE) {
             ", Size: " +
             item.querySelector("td:nth-of-type(3)").innerText;
           results.push({
-            name: item.querySelector(
-              "td:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(2)"
-            ).innerText,
-            link: item.querySelector(
-              "td:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(2)"
-            ).href,
+            name: item.querySelector("td:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(2)").innerText,
+            link: item.querySelector("td:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(2)").href,
             seeds: item.querySelector("td:nth-of-type(4)").innerText,
             details
           });

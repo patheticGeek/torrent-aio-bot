@@ -38,7 +38,7 @@ async function details(link) {
     return torrentDetails;
   } catch (err) {
     console.log(err);
-    return { error: true, message: "Runtime error occured" };
+    return { error: true, errorMessage: "Runtime error occured" };
   }
 }
 
