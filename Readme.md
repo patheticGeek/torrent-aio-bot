@@ -56,7 +56,7 @@ prefix: https://\<project name>.herokuapp.com/api/v1
 | :---------------- | :----------: | --------------------------------------------------------------------: |
 | /torrent/download | link: string | { error: bool, link: string, infohash: string errorMessage?: string } |
 | /torrent/list     |     none     |                    {error: bool, torrents: [ torrent, torrent, ... ]} |
-| /torrent/remove   | link: string |                  { error: bool, errorMessage?: string, link: string } |
+| /torrent/remove   | link: string |                                { error: bool, errorMessage?: string } |
 | /torrent/status   | link: string |                 {error: bool, status: torrent, errorMessage?: string} |
 
 link is magnet uri of the torrent

@@ -8,33 +8,33 @@ const router = express.Router();
 
 router.get("/piratebay", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
-    const data = await piratebaySearch(query, site);
+    const data = await piratebaySearch(query);
     res.send(data);
   }
 });
 
 router.get("/1337x", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
-    const data = await o337xSearch(query, site);
+    const data = await o337xSearch(query);
     res.send(data);
   }
 });
 
 router.get("/limetorrent", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
-    const data = await limetorrentSearch(query, site);
+    const data = await limetorrentSearch(query);
     res.send(data);
   }
 });

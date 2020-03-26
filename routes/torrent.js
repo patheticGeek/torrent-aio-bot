@@ -10,7 +10,10 @@ const token = dev ? require("../config").telegramToken : process.env.TELEGRAM_TO
 
 const router = express.Router();
 
-if (!token) console.log("Set telegram token env var. Read docs at https://github.com/patheticGeek/torrent-aio-bot");
+if (!token)
+  console.log(
+    "Set telegram token env var to start telegram bot. Read docs at https://github.com/patheticGeek/torrent-aio-bot"
+  );
 
 if (site && token) {
   const botOptions = dev ? { polling: true } : {};

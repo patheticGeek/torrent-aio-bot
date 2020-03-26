@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/piratebay", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
@@ -18,7 +18,7 @@ router.get("/piratebay", async (req, res) => {
 
 router.get("/1337x", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
@@ -29,7 +29,7 @@ router.get("/1337x", async (req, res) => {
 
 router.get("/limetorrent", async (req, res) => {
   let query = req.query.query;
-  let site = req.query.site;
+
   if (query === "" || !query) {
     res.send({ error: true, errorMessage: "Search term cannot be empty" });
   } else {
