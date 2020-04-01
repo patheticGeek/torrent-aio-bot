@@ -8,22 +8,20 @@ You might be lazy too so here ya go:
 
 ## TODO after deploy
 
-### Minimum required to get torrent download working:
+### To get torrent download working:
 
 Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
+
+### To get search working:
+
+The library used for web scrapping the torrent sites requires a custom buildpack on heroku. By default the search will happen on your deployment and you will need to configure the buildpack as described below. But if you don't want to do that you can specify and env SEARCH_SITE and set value to https://torrent-aio-bot.herokuapp.com/ . The frwd slash at end is necessary. This will make all the searches go thru my deployment and you don't need to configure buildpack.
+
+Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes. And then do a dummy git commit so that heroku will buid it using the buildpack this time. Then set the SEARCH_SITE env to same value as SITE.
 
 ### To start a torrent bot:
 
 Set a enviorment variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
 To set a enviorment variable go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
-
-### To get search working:
-
-Go to the build packs section in settings and click add buildpack and enter "https://github.com/jontewks/puppeteer-heroku-buildpack.git" as buildpack url then click save changes.
-
-> Heroku dosent detect third party buildpack required for using puppeteer so it is recommended to git clone and then deploy to heroku after adding buildpack manually.
->
-> If you do not deploy with git clone and then search wont work downloading will still work.
 
 ### To get gdrive upload:
 
@@ -31,8 +29,8 @@ Go to the build packs section in settings and click add buildpack and enter "htt
    copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
 2. Let the process restart 2 time. Then when it starts a link will be logged (Go to more > view logs) visit the link and signin with the desired acc. In end you will get a auth code copy it and set a env var AUTH_CODE with value of it.
 3. Let the process restart one more time. This time it will log a token, copy its value including { } and set a env var named TOKEN with that value.
-4. If you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder.
-5. Youre good to go.
+4. If you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder. The folder id will be the last part of the url such as in url "https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-" the folder id is "1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-".
+5. You're good to go. The gdrive status will be shown in gdrive.txt file when you click open on the website or open the download link from bot.
 
 > Use this torrent for testing or when downloading to setup drive it is well seeded and downloads in ~10s
 >
