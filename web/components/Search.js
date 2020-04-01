@@ -60,7 +60,7 @@ function Search() {
         </button>
       </form>
       <div className="d-flex-column mv-1">
-        {response.error && <div className="text-danger">{errorMessage}</div>}
+        {response.error && <div className="text-danger">{response.errorMessage}</div>}
         {response.results &&
           response.results.length > 0 &&
           response.results.map(result => <SearchItem site={site} result={result} key={result.link} />)}
