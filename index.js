@@ -27,7 +27,7 @@ keepalive();
 
   server.use(compression());
   server.use(bodyParser.json());
-  app.use((req, res, next) => {
+  server.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     next();
   });
