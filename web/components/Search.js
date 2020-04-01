@@ -3,7 +3,7 @@ import Input from "./Input";
 import Picker from "./Picker";
 import SearchItem from "./SearchItem";
 
-function Search() {
+function Search({ api }) {
   const [term, setTerm] = useState("");
   const [site, setSite] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ function Search() {
     setLoading(true);
 
     if (term !== "") {
-      const res = await fetch("/api/v1/search/" + site + "?query=" + term);
+      const res = await fetch(api + "api/v1/search/" + site + "?query=" + term);
       if (res.status !== 200) {
         setResponse({
           error: true,
@@ -55,7 +55,7 @@ function Search() {
           onChange={setTerm}
           required
         />
-        <button disabled={loading} className={`btn primary${loading ? " loading" : ""}`} type="submit">
+        <button disabled={loading || !site} className={`btn primary${loading ? " loading" : ""}`} type="submit">
           Search
         </button>
       </form>
