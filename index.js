@@ -57,11 +57,7 @@ keepalive();
     res.send(currStatus);
   });
 
-  server.use(
-    "/downloads",
-    express.static("downloads"),
-    serveIndex("downloads", { icons: true })
-  );
+  server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
 
   server.all("*", (req, res) => {
     handle(req, res);

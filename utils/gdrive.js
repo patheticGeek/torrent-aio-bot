@@ -88,21 +88,20 @@ function uploadFile(name, path, parentId) {
     drive.files.create(
       { resource: { name, parents: parentId ? [parentId] : null }, media: media, fields: "id" },
       (err, file) => (err ? reject(err) : resolve(file))
-    ); //prettier-ignore
+    ); // prettier-ignore
   });
 }
 
 async function uploadFolder(path, parentId) {
   const intr = path.split("/");
   const name = intr[intr.length - 1];
-  console.log(`Uploading folder to gdrive: ${name}`);
   if (!fs.existsSync(path)) {
     // Check if path exists
     console.log(`Path ${path} does not exists`);
-    return;
+    return null;
   }
 
-  //make a folder in gdrive
+  // make a folder in gdrive
   const folder = await createFolder(name, parentId || GDRIVE_PARENT_FOLDER);
   const folderId = folder.data.id;
 
@@ -112,8 +111,6 @@ async function uploadFolder(path, parentId) {
     const name = val.name;
     const isDir = val.isDirectory();
     const isFile = val.isFile();
-
-    console.log(`Name: ${name}, isDir: ${isDir}, isFile: ${isFile}`);
 
     // if dir upload dir recursively
     // if file upload the file
@@ -139,7 +136,13 @@ async function uploadWithLog(path, parentId) {
   const gdriveText = intr.join("/");
   fs.writeFileSync(gdriveText, "Upload started\n");
   const url = await uploadFolder(path, parentId);
-  fs.appendFileSync(gdriveText, `Gdrive url: ${url}`);
+  if (url) {
+    fs.appendFileSync(gdriveText, `Gdrive url: ${url}`);
+    return url;
+  } else {
+    fs.appendFileSync(gdriveText, `An error occured. GDRIVE_PARENT_FOLDER: ${GDRIVE_PARENT_FOLDER}`);
+    return null;
+  }
 }
 
 module.exports = { uploadFolder, uploadFile, uploadWithLog };
