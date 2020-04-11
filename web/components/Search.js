@@ -63,7 +63,7 @@ function Search({ api }) {
         {response.error && <div className="text-danger">{response.errorMessage}</div>}
         {response.results &&
           response.results.length > 0 &&
-          response.results.map(result => <SearchItem site={site} result={result} key={result.link} />)}
+          response.results.map(result => <SearchItem api={api} site={site} result={result} key={result.link} />)}
       </div>
     </>
   );
