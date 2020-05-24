@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "build": "cd web && npm run build",
+    "build": "cd web && npm install && npm run build",
     "start": "NODE_ENV=production node index.js"
   },
   "keywords": [
