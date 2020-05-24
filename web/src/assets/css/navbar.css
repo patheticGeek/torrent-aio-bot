@@ -1,0 +1,42 @@
+.nav {
+  background-color: var(--navbar-background);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+  opacity: 0.95;
+  z-index: 20;
+}
+.nav.nav-horiz {
+  border-bottom: 0px;
+}
+.nav > .content {
+  display: flex;
+  padding: 0px 16px;
+  height: 52px;
+}
+
+.nav .nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav .nav-logo > img {
+  height: 40px;
+  width: 40px;
+  margin: auto 6px auto 0px;
+}
+.nav .nav-logo > h1 {
+  margin: auto 0px;
+}
+
+.nav .nav-links {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav a {
+  color: var(--navbar-color);
+  transition: 0.2s color ease-in-out;
+}
+.nav a:hover {
+  color: var(--navbar-color-hover);
+}

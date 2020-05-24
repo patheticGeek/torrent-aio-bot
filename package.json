@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "build": "next build web",
+    "build": "cd web && npm run build",
     "start": "NODE_ENV=production node index.js"
   },
   "keywords": [
@@ -41,17 +41,12 @@
     "express": "^4.17.1",
     "googleapis": "39",
     "http-proxy": "^1.18.0",
-    "next": "^9.3.2",
     "node-telegram-bot-api": "^0.40.0",
     "nodemon": "^2.0.2",
-    "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
     "puppeteer": "^2.0.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
     "readline": "^1.3.0",
     "serve-index": "^1.9.1",
-    "swr": "^0.1.18",
     "webtorrent": "^0.107.17",
     "zip-a-folder": "^0.0.12"
   }
