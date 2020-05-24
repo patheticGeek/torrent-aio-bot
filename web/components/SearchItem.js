@@ -7,7 +7,7 @@ function SearchItem({ result, site, api }) {
   const loadDetails = async () => {
     setLoading(true);
 
-    const res = await fetch(api + "/api/v1/details/" + site + "?query=" + result.link);
+    const res = await fetch(api + "api/v1/details/" + site + "?query=" + result.link);
     if (res.status !== 200) {
       setResponse({ error: true, errorMessage: "Cannot connect to site" });
     } else {
