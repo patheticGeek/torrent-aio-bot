@@ -1,6 +1,5 @@
 const puppeteer = require("puppeteer");
-const O337X_SITE =
-  process.env.O337X_SITE || "https://www.1337x.to/search/{term}/1/";
+const O337X_SITE = process.env.O337X_SITE || "https://www.1337x.am/search/{term}/1/";
 
 async function search(search, site = O337X_SITE) {
   try {
@@ -28,10 +27,8 @@ async function search(search, site = O337X_SITE) {
           ", By: " +
           item.querySelectorAll("td")[5].innerText;
         results.push({
-          name: item.querySelectorAll("td")[0].querySelector("a:last-of-type")
-            .innerText,
-          link: item.querySelectorAll("td")[0].querySelector("a:last-of-type")
-            .href,
+          name: item.querySelectorAll("td")[0].querySelector("a:last-of-type").innerText,
+          link: item.querySelectorAll("td")[0].querySelector("a:last-of-type").href,
           seeds: item.querySelectorAll("td")[1].innerText,
           details
         });
