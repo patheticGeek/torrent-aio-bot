@@ -8,6 +8,10 @@ You might be lazy too so here ya go:
 
 ## TODO after deploy
 
+### To disable web client
+
+Set an enviorment variable with key DISALLOW_WEB and set it to "true"
+
 ### To get torrent download working:
 
 Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
@@ -27,8 +31,8 @@ To set a enviorment variable go to heroku dashboard open the app then go to Sett
 
 1. Go to https://developers.google.com/drive/api/v3/quickstart/nodejs and click on Enable the Drive API
    copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
-2. Let the process restart 2 time. Then when it starts a link will be logged (Go to more > view logs) visit the link and signin with the desired acc. In end you will get a auth code copy it and set a env var AUTH_CODE with value of it.
-3. Let the process restart one more time. This time it will log a token, copy its value including { } and set a env var named TOKEN with that value.
+2. Let the process restart after the change of variables. Goto https://\<project name>.herokuapp.com/logs and youll find a line saying "Get AUTH_CODE env by visiting this url" visit the url next to it and sign in with your gdrive account and copy the auth code. set another env var with key AUTH_CODE with that value.
+3. Let the process restart one more time and visit the same page. This time it will show a json object, copy its value including { } and set a env var named TOKEN with that value.
 4. If you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder. The folder id will be the last part of the url such as in url "https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-" the folder id is "1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-".
 5. You're good to go. The gdrive status will be shown in gdrive.txt file when you click open on the website or open the download link from bot.
 
