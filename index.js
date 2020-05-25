@@ -14,7 +14,7 @@ const torrent = require("./routes/torrent");
 
 const dev = process.env.NODE_ENV !== "production";
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-const useWebserver = process.env.ALLOW_WEB === undefined || process.env.ALLOW_WEB === null;
+const useWebserver = !!process.env.DISALLOW_WEB;
 
 const server = express();
 
