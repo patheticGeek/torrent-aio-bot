@@ -1,28 +1,33 @@
 const fs = require("fs");
 const { google } = require("googleapis");
+const logger = require("./logger");
 const dev = process.env.NODE_ENV !== "production";
 const { CLIENT_ID, CLIENT_SECRET, TOKEN, AUTH_CODE, GDRIVE_PARENT_FOLDER } = dev ? require("../config").creds : process.env;
 let parsedToken = null;
 if (TOKEN) {
-  parsedToken = JSON.parse(TOKEN);
+  try {
+    parsedToken = JSON.parse(TOKEN);
+  } catch (e) {
+    logger("TOKEN env not correct\nTOKEN set to:", TOKEN);
+  }
 }
 
 const SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly", "https://www.googleapis.com/auth/drive.file"];
 
 if (!CLIENT_ID) {
-  console.log("CLIENT_ID env not set. Not uploading to gdrive.");
+  logger("CLIENT_ID env not set. Not uploading to gdrive.");
 }
 if (!CLIENT_SECRET) {
-  console.log("CLIENT_SECRET env not set. Not uploading to gdrive.");
+  logger("CLIENT_SECRET env not set. Not uploading to gdrive.");
 }
 if (!AUTH_CODE) {
-  console.log("AUTH_CODE env not set.");
+  logger("AUTH_CODE env not set.");
 }
 if (!TOKEN) {
-  console.log("TOKEN env not set.");
+  logger("TOKEN env not set.");
 }
 if (GDRIVE_PARENT_FOLDER) {
-  console.log(`GDRIVE_PARENT_FOLDER set to ${GDRIVE_PARENT_FOLDER}`);
+  logger(`GDRIVE_PARENT_FOLDER set to ${GDRIVE_PARENT_FOLDER}`);
 }
 
 let auth = null;
@@ -33,7 +38,7 @@ if (CLIENT_ID && CLIENT_SECRET) {
     if (!a) return;
     auth = a;
     drive = google.drive({ version: "v3", auth });
-    console.log("Gdrive client up");
+    logger("Gdrive client up");
   });
 }
 
@@ -45,7 +50,7 @@ async function authorize() {
       access_type: "offline",
       scope: SCOPES
     });
-    console.log(`Get AUTH_CODE env by visiting this url: ${authUrl}\n`);
+    logger(`Get AUTH_CODE env by visiting this url: \n${authUrl}\n`);
     return null;
   } else if (AUTH_CODE && !TOKEN) {
     return oAuth2Client.getToken(AUTH_CODE, (err, token) => {
@@ -54,16 +59,16 @@ async function authorize() {
         return null;
       }
       oAuth2Client.setCredentials(token);
-      if (!TOKEN) console.log("Set TOKEN env to: ", JSON.stringify(token));
-      else console.log("Gdrive config OK.");
+      if (!TOKEN) logger("Set TOKEN env to: ", JSON.stringify(token));
+      else logger("Gdrive config OK.");
       return oAuth2Client;
     });
   } else if (AUTH_CODE && TOKEN) {
     oAuth2Client.setCredentials(parsedToken);
     return oAuth2Client;
   } else {
-    console.log("AUTH_CODE:", !!AUTH_CODE);
-    console.log("TOKEN:", !!TOKEN);
+    logger("AUTH_CODE:", !!AUTH_CODE);
+    logger("TOKEN:", !!TOKEN);
   }
 }
 
@@ -97,7 +102,7 @@ async function uploadFolder(path, parentId) {
   const name = intr[intr.length - 1];
   if (!fs.existsSync(path)) {
     // Check if path exists
-    console.log(`Path ${path} does not exists`);
+    logger(`Path ${path} does not exists`);
     return null;
   }
 

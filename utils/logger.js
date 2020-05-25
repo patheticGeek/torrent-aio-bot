@@ -2,17 +2,25 @@ const fs = require("fs");
 
 const logFile = "./logs.txt";
 
-if (!fs.existsSync(logFile)) {
-  fs.writeFileSync(logFile, "=========== START ==========");
-}
+fs.writeFileSync(logFile, "");
 
-function logger(data) {
-  try {
-    const stringified = JSON.stringify(data);
-    fs.appendFileSync(logFile, `\n${stringified}`);
-  } catch (e) {
-    fs.appendFileSync(logFile, `\n${data}`);
-  }
+function logger(...args) {
+  let toWrite = "\n";
+  args.forEach(arg => {
+    if (typeof arg === "string" || typeof arg === "number") {
+      toWrite += arg;
+    } else {
+      try {
+        const stringified = JSON.stringify(arg);
+        toWrite += stringified;
+      } catch (e) {
+        toWrite += arg;
+      }
+    }
+    toWrite += " ";
+  });
+  console.log(toWrite);
+  fs.appendFileSync(logFile, toWrite);
 }
 
 module.exports = logger;
