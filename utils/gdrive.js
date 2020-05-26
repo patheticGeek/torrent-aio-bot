@@ -59,7 +59,7 @@ async function authorize() {
         return null;
       }
       oAuth2Client.setCredentials(token);
-      if (!TOKEN) logger("Set TOKEN env to: ", JSON.stringify(token));
+      if (!TOKEN) logger("Set TOKEN env to:\n", JSON.stringify(token));
       else logger("Gdrive config OK.");
       return oAuth2Client;
     });
@@ -75,15 +75,12 @@ async function authorize() {
 function createFolder(name, parentId) {
   return new Promise((resolve, reject) => {
     var fileMetadata = {
-      name, mimeType: "application/vnd.google-apps.folder", parents: parentId ? [parentId] : null
+      name, mimeType: "application/vnd.google-apps.folder" , parents: parentId ? [parentId] : null
     }; // prettier-ignore
     drive.files.create(
-      {
-        resource: fileMetadata,
-        fields: "id"
-      },
+      { supportsTeamDrives: true, resource: fileMetadata, fields: "id" },
       (err, file) => (err ? reject(err) : resolve(file))
-    );
+    ); // prettier-ignore
   });
 }
 
@@ -91,7 +88,7 @@ function uploadFile(name, path, parentId) {
   return new Promise((resolve, reject) => {
     var media = { body: fs.createReadStream(path) };
     drive.files.create(
-      { resource: { name, parents: parentId ? [parentId] : null }, media: media, fields: "id" },
+      { supportsTeamDrives: true, resource: { name, parents: parentId ? [parentId] : null }, media: media, fields: "id" },
       (err, file) => (err ? reject(err) : resolve(file))
     ); // prettier-ignore
   });
