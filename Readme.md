@@ -8,10 +8,6 @@ You might be lazy too so here ya go:
 
 ## TODO after deploy
 
-### To disable web client
-
-Set an enviorment variable with key DISALLOW_WEB and set it to "true"
-
 ### To get torrent download working:
 
 Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
