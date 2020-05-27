@@ -156,7 +156,7 @@ function getFiles(folderId) {
     drive.files.list(
       {
         q: query,
-        pageSize: 100,
+        pageSize: 1000,
         supportsAllDrives: true,
         includeItemsFromAllDrives: true,
         fields: "nextPageToken, files(id, name, modifiedTime, iconLink, mimeType)"
