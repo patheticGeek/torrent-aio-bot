@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Search from "./components/Search";
 import Downloads from "./components/Downloads";
+import Drive from "./components/Drive";
 
 function App() {
   const api = process.env.SITE || "https://torrent-aio-bot.herokuapp.com/";
-  const [nav, setNav] = useState("search");
-  console.log("SITE: ", process.env.SITE);
+  const [nav, setNav] = useState("drive");
 
   return (
     <>
@@ -30,17 +30,15 @@ function App() {
               </i>
               <span className="tablet-desktop-only ml-05">Downloads</span>
             </li>
-            {/* <li
-              onClick={() => setNav("downloads")}
-              className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${
-                nav === "downloads" ? " border-bottom-1" : ""
-              }`}
+            <li
+              onClick={() => setNav("drive")}
+              className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${nav === "drive" ? " border-bottom-1" : ""}`}
             >
               <i className="h2 m-0 d-flex align-items-center">
                 <ion-icon name="push-outline" />
               </i>
               <span className="tablet-desktop-only ml-05">GDrive</span>
-            </li> */}
+            </li>
           </ul>
         </div>
       </div>
@@ -48,6 +46,7 @@ function App() {
         <div className="content">
           {nav === "search" && <Search api={api} />}
           {nav === "downloads" && <Downloads />}
+          {nav === "drive" && <Drive />}
         </div>
       </main>
     </>
