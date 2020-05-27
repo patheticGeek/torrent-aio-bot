@@ -72,6 +72,24 @@ async function authorize() {
   }
 }
 
+function getAuthURL(CLIENT_ID, CLIENT_SECRET) {
+  const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, "urn:ietf:wg:oauth:2.0:oob");
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: SCOPES
+  });
+  return authUrl;
+}
+
+function getAuthToken(CLIENT_ID, CLIENT_SECRET, AUTH_CODE) {
+  return new Promise((resolve, reject) => {
+    const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, "urn:ietf:wg:oauth:2.0:oob");
+    oAuth2Client.getToken(AUTH_CODE, (err, token) => {
+      err ? reject(err) : resolve(token);
+    });
+  });
+}
+
 function createFolder(name, parentId) {
   return new Promise((resolve, reject) => {
     var fileMetadata = {
@@ -188,4 +206,4 @@ function sendFileStream(req, res) {
   );
 }
 
-module.exports = { uploadFolder, uploadFile, uploadWithLog, getFiles, sendFileStream };
+module.exports = { uploadFolder, uploadFile, uploadWithLog, getFiles, sendFileStream, getAuthURL, getAuthToken };
