@@ -13,7 +13,6 @@ export default function Drive() {
       setError("");
       try {
         const data = await fetch("/drive/folder?id=" + folderId).then(res => res.json());
-        console.log("/drive/folder?id=" + folderId, data);
         setData(data);
       } catch (e) {
         setError(e.message || "An error occured");
