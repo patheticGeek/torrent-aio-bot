@@ -5,7 +5,7 @@ import Drive from "./components/Drive";
 
 function App() {
   const api = process.env.SITE || "https://torrent-aio-bot.herokuapp.com/";
-  const [nav, setNav] = useState("drive");
+  const [nav, setNav] = useState("search");
 
   return (
     <>
