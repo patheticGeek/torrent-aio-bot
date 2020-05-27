@@ -15,7 +15,6 @@ const torrent = require("./routes/torrent");
 
 const dev = process.env.NODE_ENV !== "production";
 const PORT = parseInt(process.env.PORT, 10) || 3000;
-const useWebserver = !!process.env.DISALLOW_WEB;
 
 const server = express();
 
@@ -33,7 +32,7 @@ server.get("/ping", (req, res) => res.send("pong"));
 
 server.get("/logs", (req, res) => res.sendFile("logs.txt", { root: __dirname }));
 
-useWebserver && server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
+server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
 
 server.use("/drive/folder", async (req, res) => {
   const folderId = req.query.id;
