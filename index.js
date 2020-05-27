@@ -35,6 +35,10 @@ server.get("/logs", (req, res) => res.sendFile("logs.txt", { root: __dirname }))
 
 useWebserver && server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
 
+server.use("/drive/folder", async (req, res) => {
+  res.send(await getFiles());
+});
+
 server.use("/drive/folder/:id", async (req, res) => {
   const folderId = req.params.id;
   res.send(await getFiles(folderId));
