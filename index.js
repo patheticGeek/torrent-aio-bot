@@ -7,6 +7,7 @@ const humanTime = require("./utils/humanTime");
 const keepalive = require("./utils/keepalive");
 const diskinfo = require("./utils/diskinfo");
 const status = require("./utils/status");
+const { getFiles, sendFileStream } = require("./utils/gdrive");
 
 const search = require("./routes/search");
 const details = require("./routes/details");
@@ -33,6 +34,13 @@ server.get("/ping", (req, res) => res.send("pong"));
 server.get("/logs", (req, res) => res.sendFile("logs.txt", { root: __dirname }));
 
 useWebserver && server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
+
+server.use("/drive/folder/:id", async (req, res) => {
+  const folderId = req.params.id;
+  res.send(await getFiles(folderId));
+});
+
+server.use("/drive/file/:id/:slug", sendFileStream);
 
 server.use("/api/v1/torrent", torrent);
 server.use("/api/v1/search", search);

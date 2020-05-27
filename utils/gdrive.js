@@ -147,4 +147,45 @@ async function uploadWithLog(path, parentId) {
   }
 }
 
-module.exports = { uploadFolder, uploadFile, uploadWithLog };
+function getFiles(folderId) {
+  let query;
+  const parent = folderId || GDRIVE_PARENT_FOLDER;
+  if (parent) query = `'${parent}' in parents and trashed = false`;
+  else query = "trashed = false";
+  return new Promise((resolve, reject) => {
+    drive.files.list(
+      {
+        q: query,
+        pageSize: 100,
+        supportsAllDrives: true,
+        includeItemsFromAllDrives: true,
+        fields: "nextPageToken, files(id, name, modifiedTime, iconLink, mimeType)"
+      },
+      (err, res) => (err ? reject(err) : resolve(res.data.files))
+    );
+  });
+}
+
+function sendFileStream(req, res) {
+  const fileId = req.params.id;
+  drive.files.get(
+    {
+      fileId,
+      alt: "media"
+    },
+    { responseType: "stream" },
+    (err, resp) => {
+      if (!err) {
+        resp.data
+          .on("end", () => {})
+          .on("error", () => {})
+          .pipe(res);
+      } else {
+        console.log("error ", err);
+        res.end();
+      }
+    }
+  );
+}
+
+module.exports = { uploadFolder, uploadFile, uploadWithLog, getFiles, sendFileStream };
