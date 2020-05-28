@@ -34,12 +34,12 @@ server.get("/logs", (req, res) => res.sendFile("logs.txt", { root: __dirname }))
 
 server.use("/downloads", express.static("downloads"), serveIndex("downloads", { icons: true }));
 
-server.use("/drive/folder", async (req, res) => {
+server.use("/api/v1/drive/folder", async (req, res) => {
   const folderId = req.query.id;
   res.send(await getFiles(folderId));
 });
 
-server.use("/drive/file/:slug", sendFileStream);
+server.use("/api/v1/drive/file/:slug", sendFileStream);
 
 server.use("/api/v1/torrent", torrent);
 server.use("/api/v1/search", search);

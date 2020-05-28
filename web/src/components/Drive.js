@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DriveItem from "./DriveItem";
+import DriveItem from "../components/DriveItem";
 
 export default function Drive() {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ export default function Drive() {
       setLoading(true);
       setError("");
       try {
-        const data = await fetch("/drive/folder?id=" + folderId).then(res => res.json());
+        const data = await fetch("/api/v1/drive/folder?id=" + folderId).then(res => res.json());
         setData(data);
       } catch (e) {
         setError(e.message || "An error occured");
