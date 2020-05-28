@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useSWR from "swr";
-import Input from "./Input";
-import DownloadItem from "./DownloadItem";
+import Input from "../components/Input";
+import DownloadItem from "../components/DownloadItem";
 
 function Downloads() {
   const fetcher = (...args) => fetch(...args).then(res => res.json());

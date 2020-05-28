@@ -7,7 +7,7 @@ const humanTime = require("./utils/humanTime");
 const keepalive = require("./utils/keepalive");
 const diskinfo = require("./utils/diskinfo");
 const status = require("./utils/status");
-const { getFiles, sendFileStream } = require("./utils/gdrive");
+const { getFiles, sendFileStream, getAuthURL, getAuthToken } = require("./utils/gdrive");
 
 const search = require("./routes/search");
 const details = require("./routes/details");
@@ -41,6 +41,31 @@ server.use("/api/v1/drive/folder", async (req, res) => {
 
 server.use("/api/v1/drive/file/:slug", sendFileStream);
 
+server.use("/api/v1/drive/getAuthURL", (req, res) => {
+  const CLIENT_ID = req.query.clientId;
+  const CLIENT_SECRET = req.query.clientSecret;
+
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+    res.send(JSON.stringify({ error: "Client Id and secret are required" }));
+  } else {
+    const authURL = getAuthURL(CLIENT_ID, CLIENT_SECRET);
+    res.send(JSON.stringify({ error: "", authURL }));
+  }
+});
+
+server.use("/api/v1/drive/getAuthToken", async (req, res) => {
+  const CLIENT_ID = req.query.clientId;
+  const CLIENT_SECRET = req.query.clientSecret;
+  const AUTH_CODE = req.query.authCode;
+
+  if (!CLIENT_ID || !CLIENT_SECRET || !AUTH_CODE) {
+    res.send(JSON.stringify({ error: "Client Id and secret and auth code are required" }));
+  } else {
+    const token = await getAuthToken(CLIENT_ID, CLIENT_SECRET, AUTH_CODE);
+    res.send(JSON.stringify({ token, error: "" }));
+  }
+});
+
 server.use("/api/v1/torrent", torrent);
 server.use("/api/v1/search", search);
 server.use("/api/v1/details", details);
@@ -60,7 +85,8 @@ server.get("/api/v1/status", async (req, res) => {
   res.send(currStatus);
 });
 
-server.all("*", express.static("web/build"));
+server.use("/static", express.static("web/build/static"));
+server.all("*", (req, res) => res.sendFile("web/build/index.html", { root: __dirname }));
 
 server.listen(PORT, () => {
   console.log(`> Running on http://localhost:${PORT}`);

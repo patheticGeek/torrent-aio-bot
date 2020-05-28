@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Input from "./Input";
-import Picker from "./Picker";
-import SearchItem from "./SearchItem";
+import Input from "../components/Input";
+import Picker from "../components/Picker";
+import SearchItem from "../components/SearchItem";
 
 function Search({ api }) {
   const [term, setTerm] = useState("");
