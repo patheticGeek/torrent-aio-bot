@@ -102,7 +102,17 @@ function createFolder(name, parentId) {
   });
 }
 
-function uploadFile(name, path, parentId) {
+function uploadFileStream(name, stream, parentId = GDRIVE_PARENT_FOLDER) {
+  return new Promise((resolve, reject) => {
+    var media = { body: stream };
+    drive.files.create(
+      { supportsTeamDrives: true, resource: { name, parents: parentId ? [parentId] : null }, media: media, fields: "id" },
+      (err, file) => (err ? reject(err) : resolve(file))
+    ); // prettier-ignore
+  });
+}
+
+function uploadFile(name, path, parentId = GDRIVE_PARENT_FOLDER) {
   return new Promise((resolve, reject) => {
     var media = { body: fs.createReadStream(path) };
     drive.files.create(
@@ -206,4 +216,4 @@ function sendFileStream(req, res) {
   );
 }
 
-module.exports = { uploadFolder, uploadFile, uploadWithLog, getFiles, sendFileStream, getAuthURL, getAuthToken };
+module.exports = { uploadFolder, uploadFileStream, uploadFile, uploadWithLog, getFiles, sendFileStream, getAuthURL, getAuthToken };
