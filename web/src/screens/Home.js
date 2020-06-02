@@ -1,21 +1,23 @@
-import React from "react";
-
-import Search from "../screens/Search";
-import Downloads from "../screens/Downloads";
-import Drive from "../screens/Drive";
+import React, { lazy, Suspense } from "react";
 import TopNav from "../components/TopNav";
 
-export default function Home({ tab, driveProps, searchProps }) {
+const Search = lazy(() => import("../screens/Search"));
+const Downloads = lazy(() => import("../screens/Downloads"));
+const Drive = lazy(() => import("../screens/Drive"));
+
+export default function Home({ tab }) {
   const nav = tab || "search";
 
   return (
     <>
-      <TopNav nav={nav} setNav={() => {}} />
+      <TopNav nav={nav} />
       <main>
         <div className="content">
-          {nav === "search" && <Search searchProps={searchProps} />}
-          {nav === "downloads" && <Downloads />}
-          {nav === "drive" && <Drive driveProps={driveProps} />}
+          <Suspense fallback={<div className="div-loading" />}>
+            {nav === "search" && <Search />}
+            {nav === "downloads" && <Downloads />}
+            {nav === "drive" && <Drive />}
+          </Suspense>
         </div>
       </main>
     </>
