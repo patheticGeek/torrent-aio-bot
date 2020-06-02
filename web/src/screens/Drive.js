@@ -1,41 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useParams, Link } from "react-router-dom";
 import DriveItem from "../components/DriveItem";
+import useSWR from "swr";
 
 export default function Drive() {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
-  const [folderId, setFolderId] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const data = await fetch("/api/v1/drive/folder?id=" + folderId).then(res => res.json());
-        setData(data);
-      } catch (e) {
-        setError(e.message || "An error occured");
-      }
-      setLoading(false);
-    })();
-  }, [folderId]);
-
-  const home = () => setFolderId("");
+  const { folderId } = useParams();
+  const { data, error } = useSWR(`/api/v1/drive/folder?id=${folderId || ""}`, url => fetch(url).then(res => res.json()));
 
   return (
     <>
       <h1 className="d-flex align-items-center">
         {folderId && (
-          <i style={{ marginRight: 8, cursor: "pointer" }} className="d-flex align-items-center" onClick={home}>
-            <ion-icon name="arrow-back-outline" />
-          </i>
+          <Link to="/drive" style={{ marginRight: 8, cursor: "pointer", color: "var(--color)", display: "inline-block" }}>
+            <i className="d-flex align-items-center">
+              <ion-icon name="home-outline" />
+            </i>
+          </Link>
         )}
         Drive Index
       </h1>
-      {loading && <div className="loading-div" />}
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {!loading && data && data.map(item => <DriveItem key={item.id} item={item} setFolderId={setFolderId} />)}
+      {!data && !error && <div className="loading-div" />}
+      {!!error && <div style={{ color: "red" }}>{`${error}`}</div>}
+      {data && data.map(item => <DriveItem key={item.id} item={item} />)}
     </>
   );
 }

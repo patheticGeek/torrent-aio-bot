@@ -12,11 +12,8 @@ function App() {
         <Route exact path="/search">
           <Home tab="search" />
         </Route>
-        <Route exact path="/drive">
+        <Route path="/drive/:folderId?">
           <Home tab="drive" />
-        </Route>
-        <Route exact path="/drive/:folderId">
-          {route => <Home tab="drive" driveProps={{ folderId: route.match.params.folderId }} />}
         </Route>
         <Route exact path="/download">
           <Home tab="downloads" />
