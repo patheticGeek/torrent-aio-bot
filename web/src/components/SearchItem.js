@@ -54,9 +54,9 @@ function SearchItem({ result, site, api }) {
             <a href={response.torrent.downloadLink} className="btn warning m-0 mt-1">
               Download
             </a>
-            <a onClick={copyToClipboard} className="btn primary m-0 ml-1 mt-1">
+            <button onClick={copyToClipboard} className="btn primary m-0 ml-1 mt-1">
               Copy link
-            </a>
+            </button>
           </div>
         )}
       </div>
