@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function TopNav({ nav, setNav }) {
+export default function TopNav({ nav }) {
   return (
     <div className="nav nav-horiz">
       <div className="content">
         <ul className="d-flex align-items-center space-around width-100 m-0">
           <li className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${nav === "search" ? " border-bottom-1" : ""}`}>
-            <Link to="/search" className="height-100 d-flex align-items-center" onClick={() => setNav("search")}>
+            <Link to="/search" className="height-100 d-flex align-items-center">
               <i className="h2 m-0 d-flex align-items-center">
                 <ion-icon name="search-outline" />
               </i>
@@ -15,7 +15,7 @@ export default function TopNav({ nav, setNav }) {
             </Link>
           </li>
           <li className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${nav === "downloads" ? " border-bottom-1" : ""}`}>
-            <Link to="/download" className="height-100 d-flex align-items-center" onClick={() => setNav("downloads")}>
+            <Link to="/download" className="height-100 d-flex align-items-center">
               <i className="h2 m-0 d-flex align-items-center">
                 <ion-icon name="download-outline" />
               </i>
@@ -23,7 +23,7 @@ export default function TopNav({ nav, setNav }) {
             </Link>
           </li>
           <li className={`cursor-pointer p-0 ph-1 height-100 d-flex align-items-center${nav === "drive" ? " border-bottom-1" : ""}`}>
-            <Link to="/drive" className="height-100 d-flex align-items-center" onClick={() => setNav("drive")}>
+            <Link to="/drive" className="height-100 d-flex align-items-center">
               <i className="h2 m-0 d-flex align-items-center">
                 <ion-icon name="push-outline" />
               </i>
