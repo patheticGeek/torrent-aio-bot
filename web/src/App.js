@@ -9,6 +9,18 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/search">
+          <Home tab="search" />
+        </Route>
+        <Route exact path="/drive">
+          <Home tab="drive" />
+        </Route>
+        <Route exact path="/drive/:folderId">
+          {route => <Home tab="drive" driveProps={{ folderId: route.match.params.folderId }} />}
+        </Route>
+        <Route exact path="/download">
+          <Home tab="downloads" />
+        </Route>
         <Route exact path="/drivehelp" component={DriveHelp} />
       </Switch>
     </Router>
