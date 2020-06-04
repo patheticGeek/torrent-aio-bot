@@ -20,6 +20,12 @@ const server = express();
 
 keepalive();
 
+if (!dev) {
+  server.use((req, res, next) => {
+    req.secure ? next() : res.redirect("https://" + req.headers.host + req.url);
+  });
+}
+
 server.use(compression());
 server.use(bodyParser.json());
 server.use((req, res, next) => {
