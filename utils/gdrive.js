@@ -125,39 +125,54 @@ function uploadFile(name, path, parentId = GDRIVE_PARENT_FOLDER) {
 async function uploadFolder(path, parentId) {
   const intr = path.split("/");
   const name = intr[intr.length - 1];
+
   if (!fs.existsSync(path)) {
     // Check if path exists
     logger(`Path ${path} does not exists`);
     return null;
   }
 
-  // make a folder in gdrive
-  const folder = await createFolder(name, parentId || GDRIVE_PARENT_FOLDER);
-  const folderId = folder.data.id;
+  const stat = fs.lstatSync(path);
 
-  // get list of folders contents
-  const contents = fs.readdirSync(path, { withFileTypes: true });
-  const uploads = contents.map(val => {
-    const name = val.name;
-    const isDir = val.isDirectory();
-    const isFile = val.isFile();
+  if (stat.isDirectory()) {
+    // make a folder in gdrive
+    const folder = await createFolder(name, parentId || GDRIVE_PARENT_FOLDER);
+    const folderId = folder.data.id;
 
-    // if dir upload dir recursively
-    // if file upload the file
-    if (isDir) {
-      return uploadFolder(`${path}/${name}`, folderId);
-    } else if (isFile) {
-      return uploadFile(name, `${path}/${name}`, folderId);
-    } else {
-      return null;
-    }
-  });
+    // get list of folders contents
+    const contents = fs.readdirSync(path, { withFileTypes: true });
+    const uploads = contents.map(val => {
+      const name = val.name;
+      const isDir = val.isDirectory();
+      const isFile = val.isFile();
 
-  // await all uploads
-  await Promise.all(uploads);
+      // if dir upload dir recursively
+      // else file upload the file
+      if (isDir) {
+        return uploadFolder(`${path}/${name}`, folderId);
+      } else if (isFile) {
+        return uploadFile(name, `${path}/${name}`, folderId);
+      } else {
+        return null;
+      }
+    });
 
-  // return the gdrive link
-  return `https://drive.google.com/drive/folders/${folderId}`;
+    // await all uploads
+    await Promise.all(uploads);
+
+    // return the gdrive link
+    return `https://drive.google.com/drive/folders/${folderId}`;
+  } else if (stat.isFile()) {
+    // make a folder in gdrive
+    const folder = await createFolder(name, parentId || GDRIVE_PARENT_FOLDER);
+    const folderId = folder.data.id;
+
+    // upload the file to drive
+    await uploadFile(name, `${path}`, folderId);
+
+    // return the gdrive link
+    return `https://drive.google.com/drive/folders/${folderId}`;
+  }
 }
 
 async function uploadWithLog(path, parentId) {
