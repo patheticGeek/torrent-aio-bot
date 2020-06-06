@@ -14,17 +14,12 @@ const details = require("./routes/details");
 const torrent = require("./routes/torrent");
 
 const dev = process.env.NODE_ENV !== "production";
+const allowWeb = !process.env.DISABLE_WEB;
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 const server = express();
 
 keepalive();
-
-// if (!dev) {
-// server.use((req, res, next) => {
-//   req.headers.host.indexOf("https://") !== 0 ? next() : res.redirect("https://" + req.headers.host + req.url);
-// });
-// }
 
 server.use(compression());
 server.use(bodyParser.json());
@@ -91,8 +86,13 @@ server.get("/api/v1/status", async (req, res) => {
   res.send(currStatus);
 });
 
-server.use("/static", express.static("web/build/static"));
-server.all("*", (req, res) => res.sendFile("web/build/index.html", { root: __dirname }));
+if (allowWeb) {
+  console.log("web allowed");
+  server.use("/static", express.static("web/build/static"));
+  server.all("*", (req, res) => res.sendFile("web/build/index.html", { root: __dirname }));
+} else {
+  console.log("web disabled");
+}
 
 server.listen(PORT, () => {
   console.log(`> Running on http://localhost:${PORT}`);
