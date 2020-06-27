@@ -215,9 +215,12 @@ function sendFileStream(req, res) {
       fileId,
       alt: "media"
     },
-    { responseType: "stream" },
+    { responseType: "stream", ...req.headers },
     (err, resp) => {
       if (!err) {
+        Object.keys(resp.headers).forEach(val => {
+          res.setHeader(val, resp.headers[val]);
+        });
         resp.data
           .on("end", () => {})
           .on("error", () => {})
