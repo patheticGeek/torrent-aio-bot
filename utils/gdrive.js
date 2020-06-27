@@ -209,7 +209,8 @@ function getFiles(folderId) {
 }
 
 function sendFileStream(req, res) {
-  const fileId = req.query.id;
+  const fileId = req.params.id || req.query.id;
+  if (!fileId) res.sendStatus(404);
   drive.files.get(
     {
       fileId,

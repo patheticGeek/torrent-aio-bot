@@ -40,7 +40,7 @@ server.use("/api/v1/drive/folder", async (req, res) => {
   res.send(await getFiles(folderId));
 });
 
-server.use("/api/v1/drive/file/:slug", sendFileStream);
+server.use("/api/v1/drive/file/:id", sendFileStream);
 
 server.use("/api/v1/drive/getAuthURL", (req, res) => {
   const CLIENT_ID = req.query.clientId;
