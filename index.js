@@ -29,7 +29,7 @@ server.use((req, res, next) => {
   next();
 });
 
-server.get("/ping", (req, res) => res.send("pong"));
+server.get("/ping", (req, res) => res.send("Pong!"));
 
 server.get("/logs", (req, res) => res.sendFile("logs.txt", { root: __dirname }));
 
