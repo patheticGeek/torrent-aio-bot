@@ -17,7 +17,7 @@ export default function Drive() {
             </i>
           </Link>
         )}
-        Drive Index
+        HB4All Team Drive Index
       </h1>
       {!data && !error && <div className="loading-div" />}
       {!!error && <div style={{ color: "red" }}>{`${error}`}</div>}
