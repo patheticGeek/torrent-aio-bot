@@ -6,7 +6,7 @@ function Navbar() {
     <div className="nav">
       <div className="content">
         <div className="nav-logo">
-          <h1 className="h2 m-0">Torrent AIO bot</h1>
+          <h1 className="h2 m-0">Raajali</h1>
         </div>
         <div className="nav-links">
           <NightModeToggle />
