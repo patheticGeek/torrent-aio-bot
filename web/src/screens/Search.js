@@ -3,6 +3,8 @@ import Input from "../components/Input";
 import Picker from "../components/Picker";
 import SearchItem from "../components/SearchItem";
 
+const SEARCH_SITE = process.env.SEARCH_SITE
+
 function Search({ api }) {
   const [term, setTerm] = useState("");
   const [site, setSite] = useState("");
@@ -49,7 +51,7 @@ function Search({ api }) {
         <Input
           id="term"
           name="term"
-          label="Search Term"
+          label="Search Term (Current Only 1337x is Working! "
           placeholder="The forgotten army, Flames..."
           value={term}
           onChange={setTerm}
@@ -69,6 +71,6 @@ function Search({ api }) {
   );
 }
 
-Search.defaultProps = { api: "https://torrent-aio-bot.herokuapp.com/" };
+Search.defaultProps = { api: SEARCH_SITE };
 
 export default Search;
