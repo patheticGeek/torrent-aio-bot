@@ -30,7 +30,7 @@ Go to the build packs section in settings and click add buildpack and enter "htt
    copy client id and set an enviorment variable in heroku with name CLIENT_ID then copy client secret and set another env named CLIENT_SECRET.
 2. Goto https://\<project name>.herokuapp.com/drivehelp and paste your client id and secret and click "Get auth code", it will redirect you to login and you'll get a auth code after login paste that auth code in the auth code feild and click "Generate token" it'll give you a token. now set these as env variable CLIENT_ID, CLIENT_SECRET, AUTH_CODE and TOKEN.
 3. By default files are uploaded in the root of drive if you dont want to upload in root folder make a folder copy its id and set a env var GDRIVE_PARENT_FOLDER and value id of desired folder. The folder id will be the last part of the url such as in url "https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-" the folder id is "1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-".
-4. If you want team drive support open your teamdrive and copy the folder id from url eg. https://drive.google.com/drive/u/0/folders/0ABZHZpfYfdVCUk9PVA this is link of a team drive copy the last part "0ABZHZpfYfdVCUk9PVA" this will be your GDRIVE_PARENT_FOLDER. If you want them in a folder in teamdrive open the folder and use that folder's id instead.
+4. If you want team drive support open your teamdrive and copy the folder id from url eg. https://drive.google.com/drive/u/0/folders/0ABZHZpfYfdVCUk9PVA this is link of a team drive copy the last part "0ABZHZpfYfdVCUk9PVA" this will be your GDRIVE_PARENT_FOLDER(The folder where You want to store your files). If you want them in a folder in teamdrive open the folder and use that folder's id instead.
 5. You're good to go. The gdrive status will be shown in gdrive.txt file when you click Open on the website downloads page. Bot wil automatically send you drive link when its uploaded.
 
 > Use this torrent for testing or when downloading to setup drive it is well seeded and downloads in ~10s
@@ -48,6 +48,7 @@ To change the pirate bay site, visit the site you would like to use search somet
 
 Same, if you want to change the limetorrents site visit the site you want to use and search for something, then replace the thing you searched for with {term} so final url looks like https://limetorrents.at/search?search={term} and set this value to env var LIMETORRENT_SITE
 
+To Change 1337x Site Please Check The correct search url before changing in the code. It is Different then piratebay and limetorrent
 For 1337x env var name will be O337X_SITE
 
 ## API Endpoints
@@ -106,4 +107,4 @@ torrent: {
 }
 ```
 
-sites available piratebay, 1337x, limetorrent
+sites available piratebay(Currently Not Working), 1337x, limetorrent
