@@ -51,7 +51,7 @@ function Search({ api }) {
         <Input
           id="term"
           name="term"
-          label="Search Term (Current Only 1337x is Working! "
+          label="Search Term (Current Only 1337x is Working!) "
           placeholder="The forgotten army, Flames..."
           value={term}
           onChange={setTerm}
