@@ -1,5 +1,7 @@
 # Torrent all-in-one bot
 
+#### This repo is currently unmaintained due to the inconsistency between proxy sites and how they load data
+
 Lorem ipsum i am too lazy figure what it does yourself
 
 You might be lazy too so here ya go:
