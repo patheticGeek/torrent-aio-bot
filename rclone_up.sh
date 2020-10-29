@@ -1,5 +1,6 @@
 #!/bin/bash
 
+prefix="../../"
 fowardslah="/"
 filepath=$1
 toppath=$1$fowardslah
