@@ -1,7 +1,7 @@
 {
-  "name": "torrent-aio-bot",
+  "name": "torrent-aio-bot-rclone-mod",
   "description": "All in one bot for torrenting",
-  "repository": "https://github.com/patheticGeek/torrent-aio-bot",
+  "repository": "https://github.com/daggergad7/torrent-aio-bot.git",
   "keywords": ["node", "express", "bot", "torrent", "automation"],
   "env": {
 	"AUTH_CODE": {
