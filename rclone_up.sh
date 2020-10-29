@@ -1,6 +1,6 @@
 #!/bin/bash
 
-toppath=$1
+toppath="./downloads/"
 
 LIGHT_GREEN_FONT_PREFIX="\033[1;32m"
 FONT_COLOR_SUFFIX="\033[0m"
