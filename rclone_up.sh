@@ -16,7 +16,6 @@ echo -e "$toppath"
 echo -e "
 -------------------------- [TASK INFO] --------------------------
 Download path: ${toppath}
-Upload path: ${UPLOAD_PATH}
 Remote path A: ${RCLONE_DESTINATION}
 Remote path B: ${RCLONE_DESTINATION_2}
 Remote path C: ${RCLONE_DESTINATION_3}
