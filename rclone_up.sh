@@ -1,9 +1,6 @@
 #!/bin/bash
 
-prefix="../../"
-fowardslah="/"
-filepath=$1
-toppath=$1$fowardslah
+toppath=$1
 
 LIGHT_GREEN_FONT_PREFIX="\033[1;32m"
 FONT_COLOR_SUFFIX="\033[0m"
