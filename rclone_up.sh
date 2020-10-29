@@ -28,54 +28,58 @@ Remote path J: ${RCLONE_DESTINATION_10}
 "
 
 echo -e "Starting Upload!"
+if [ -n "${RCLONE_CONFIG}" ]; then
+
 if [ -n "${RCLONE_DESTINATION}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION}"
     echo -e "Uploaded to ${RCLONE_DESTINATION} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_2}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_2}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_2}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_2} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_3}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_3}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_3}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_3} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_4}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_4}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_4}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_4} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_5}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_5} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_6}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_6}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_6}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_6} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_7}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_7}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_7}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_7} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_8}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_8}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_8}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_8} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_9}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_9}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_9}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_9} successfully"
 fi
 
 if [ -n "${RCLONE_DESTINATION_10}" ]; then
-    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_10}"
+    rclone --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_10}"
     echo -e "Uploaded to ${RCLONE_DESTINATION_10} successfully"
+fi
+
 fi
 
 echo -e "Tasks Done!"
