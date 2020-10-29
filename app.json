@@ -48,6 +48,31 @@
            "description": "If you only want telegram bot to be working, set value of DISABLE_WEB env var to true, else leave it BLANK.",
            "value": "",
            "required": false
+            },
+  "RCLONE_CONFIG": {
+            "description": "Rclone config to mount in one line, replace line breaks with \"\\n\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]",
+            "required": false,
+            "value": "Google:tmp"
+            },
+  "RCLONE_DESTINATION_2": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_3": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_4": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_5": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
             }
         },
   

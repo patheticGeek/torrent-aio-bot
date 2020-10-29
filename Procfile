@@ -1,0 +1,1 @@
+web: source bash init2.sh

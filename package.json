@@ -48,6 +48,7 @@
     "readline": "^1.3.0",
     "serve-index": "^1.9.1",
     "webtorrent": "^0.107.17",
-    "zip-a-folder": "^0.0.12"
+    "zip-a-folder": "^0.0.12",
+    "shelljs": "^0.8.4"
   }
 }
