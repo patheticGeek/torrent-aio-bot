@@ -1,6 +1,8 @@
 #!/bin/bash
 
-toppath=$1
+fowardslah="/"
+filepath=$1
+toppath=$1$fowardslah
 
 LIGHT_GREEN_FONT_PREFIX="\033[1;32m"
 FONT_COLOR_SUFFIX="\033[0m"
@@ -11,8 +13,7 @@ echo -e "Path is:"
 echo -e "$toppath"
 
 
-TASK_INFO() {
-    echo -e "
+echo -e "
 -------------------------- [TASK INFO] --------------------------
 Download path: ${toppath}
 Upload path: ${UPLOAD_PATH}
