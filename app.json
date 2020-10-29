@@ -6,22 +6,22 @@
   "env": {
 	"AUTH_CODE": {
 		"description": "Drive Auth Code is needed to access in Drive. Need To Generate. go to \"http://torrent-aio-bot.herokuapp.com/drivehelp\" for Generate.",
-      	"value": "Something like 4/1QHtT6m6DunqA_Dc_K2zSzkYft3Va8wEpxEg7Xig61fY-fBcTPxbhXA/",
+      	"value": "",
             "required": false
             },
 	"CLIENT_ID": {
             "description": "Drive Auth Code is needed to access in Drive. Need To Generate. go to \"https://developers.google.com/drive/api/v3/quickstart/nodejs\" for Generate.",
-            "value": "Something like 209800747726-77hnjivdrifpcp0f7e1d08eqtobp7sl5.apps.googleusercontent.com",
+            "value": "",
             "required": false
             },
 	"CLIENT_SECRET": {
             "description": "Drive Auth Code is needed to access in Drive. Need To Generate. go to \"https://developers.google.com/drive/api/v3/quickstart/nodejs\" for Generate.",
-            "value": "Something like 7Tvz8hPufx-O7XHK583j8Gtm",
+            "value": "",
             "required": false
             },
 	"GDRIVE_PARENT_FOLDER": {
             "description": "Folder Id of Google. Read Readme.md to know more.",
-            "value": "Something like https://drive.google.com/drive/folders/1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH- the folder id is 1rpk7tGWs_lv_kZ_W4EPaKj8brfFVLOH-.",
+            "value": "",
             "required": false
             },
   "TELEGRAM_TOKEN": {
@@ -31,7 +31,7 @@
             },
   "TOKEN": {
             "description": "Drive Auth Code is needed to access in Drive. Need To Generate. go to \"http://torrent-aio-bot.herokuapp.com/drivehelp\" for Generate",
-            "value": "Something like {\"access_toke\":\"ya29.a****************\"}",
+            "value": "",
             "required": false
 			
             },
@@ -41,7 +41,7 @@
             },
   "SITE": {
       "description": "Change APPNAME to your heroku app name set first",
-      "value": "https://APPNAME.herokuapp.com/"
+      "value": "https://APPNAME.herokuapp.com"
 
             },
   "DISABLE_WEB": {
