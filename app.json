@@ -73,6 +73,26 @@
   "RCLONE_DESTINATION_5": {
             "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
             "required": false
+            },
+  "RCLONE_DESTINATION_6": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_7": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_8": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_9": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
+            },
+  "RCLONE_DESTINATION_10": {
+            "description": "Rclone destination path, format \"[drivename A]:[remove path A]\"",
+            "required": false
             }
         },
   

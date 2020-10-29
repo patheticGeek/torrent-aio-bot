@@ -1,150 +1,84 @@
 #!/bin/bash
 
-# Limit the minimum upload size, which is only valid when downloading multiple BT files, and is used to filter useless files. Files below this size will be deleted and will not be uploaded.
-#MIN_SIZE=10m
+toppath=$1
 
-# RCLONE Configuration file path
-export RCLONE_CONFIG=rclone.conf
+LIGHT_GREEN_FONT_PREFIX="\033[1;32m"
+FONT_COLOR_SUFFIX="\033[0m"
+INFO="[${LIGHT_GREEN_FONT_PREFIX}INFO${FONT_COLOR_SUFFIX}]"
 
-# RCLONE The size of the block, the default is 5M. Theoretically, the larger the upload speed, the faster it will occupy more memory. If the setting is too large, the process may be interrupted.
-export RCLONE_CACHE_CHUNK_SIZE=3M
+echo -e "$(date +"%m/%d %H:%M:%S") ${INFO} Uploading to rclone started!"
+echo -e "Path is:"
+echo -e "$toppath"
 
-# RCLONE Upload failure retry wait time, the default is disabled, unit s, m, h
-export RCLONE_RETRIES_SLEEP=30s
-
-# RCLONE Abnormal exit retry count
-RETRY_NUM=6
-
-#============================================================
-
-DOWNLOAD_PATH='downloads'
-FILE_PATH=$1                                          
-REMOVE_DOWNLOAD_PATH=${FILE_PATH#${DOWNLOAD_PATH}/}   
-TOP_PATH=${DOWNLOAD_PATH}/${REMOVE_DOWNLOAD_PATH%%/*} 
-INFO="[INFO]"
-ERROR="[ERROR]"
-WARRING="[WARRING]"
 
 TASK_INFO() {
     echo -e "
 -------------------------- [TASK INFO] --------------------------
-Download path: ${DOWNLOAD_PATH}
-File path: ${FILE_PATH}
+Download path: ${toppath}
 Upload path: ${UPLOAD_PATH}
-Remote path A: ${REMOTE_PATH}
-Remote path B: ${REMOTE_PATH_2}
-Remote path C: ${REMOTE_PATH_3}
-Remote path D: ${REMOTE_PATH_4}
-Remote path E: ${REMOTE_PATH_5}
+Remote path A: ${RCLONE_DESTINATION}
+Remote path B: ${RCLONE_DESTINATION_2}
+Remote path C: ${RCLONE_DESTINATION_3}
+Remote path D: ${RCLONE_DESTINATION_4}
+Remote path E: ${RCLONE_DESTINATION_5}
+Remote path F: ${RCLONE_DESTINATION_6}
+Remote path G: ${RCLONE_DESTINATION_7}
+Remote path H: ${RCLONE_DESTINATION_8}
+Remote path I: ${RCLONE_DESTINATION_9}
+Remote path J: ${RCLONE_DESTINATION_10}
 -------------------------- [TASK INFO] --------------------------
 "
 }
 
-CLEAN_UP() {
-    [[ -n ${MIN_SIZE} || -n ${INCLUDE_FILE} || -n ${EXCLUDE_FILE} ]] && echo -e "${INFO} Clean up excluded files ..."
-    [[ -n ${MIN_SIZE} ]] && rclone delete -v "${UPLOAD_PATH}" --max-size ${MIN_SIZE}
-    [[ -n ${INCLUDE_FILE} ]] && rclone delete -v "${UPLOAD_PATH}" --exclude "*.{${INCLUDE_FILE}}"
-    [[ -n ${EXCLUDE_FILE} ]] && rclone delete -v "${UPLOAD_PATH}" --include "*.{${EXCLUDE_FILE}}"
-}
-
-UPLOAD_FILE() {
-    RETRY=0
-	echo "$(($(cat numUpload)+4))" > numUpload # Plus 1
-    while [ ${RETRY} -le ${RETRY_NUM} ]; do
-        [ ${RETRY} != 0 ] && (
-            echo
-            echo -e "$(date +"%m/%d %H:%M:%S") ${ERROR} ${UPLOAD_PATH} Upload failed! Retry ${RETRY}/${RETRY_NUM} ..."
-            echo
-        )
-        rclone copy -v "${UPLOAD_PATH}" "${REMOTE_PATH}"
-        RCLONE_EXIT_CODE=$?
-		RCLONE_EXIT_CODE_2=0
-		RCLONE_EXIT_CODE_3=0
-		RCLONE_EXIT_CODE_4=0
-		RCLONE_EXIT_CODE_5=0
-		if [ -n "${RCLONE_DESTINATION_2}" ]; then
-			rclone copy -v "${UPLOAD_PATH}" "${REMOTE_PATH_2}"
-			RCLONE_EXIT_CODE_2=$?
-		fi
-		if [ -n "${RCLONE_DESTINATION_3}" ]; then
-			rclone copy -v "${UPLOAD_PATH}" "${REMOTE_PATH_3}"
-			RCLONE_EXIT_CODE_3=$?
-		fi
-		if [ -n "${RCLONE_DESTINATION_4}" ]; then
-			rclone copy -v "${UPLOAD_PATH}" "${REMOTE_PATH_4}"
-			RCLONE_EXIT_CODE_4=$?
-		fi
-		if [ -n "${RCLONE_DESTINATION_5}" ]; then
-			rclone copy -v "${UPLOAD_PATH}" "${REMOTE_PATH_5}"
-			RCLONE_EXIT_CODE_5=$?
-		fi
-        if [ ${RCLONE_EXIT_CODE} -eq 0 ] && [ ${RCLONE_EXIT_CODE_2} -eq 0 ] && [ ${RCLONE_EXIT_CODE_3} -eq 0 ] && [ ${RCLONE_EXIT_CODE_4} -eq 0 ] && [ ${RCLONE_EXIT_CODE_5} -eq 0 ]; then
-            rclone rmdirs -v "${DOWNLOAD_PATH}" --leave-root
-            echo -e "$(date +"%m/%d %H:%M:%S") ${INFO} Upload done: ${UPLOAD_PATH}"
-			rclone delete -v "${UPLOAD_PATH}"
-            break
-        else
-            RETRY=$((${RETRY} + 4))
-            [ ${RETRY} -gt ${RETRY_NUM} ] && (
-                echo
-                echo -e "$(date +"%m/%d %H:%M:%S") ${ERROR} Upload failed: ${UPLOAD_PATH}"
-                echo
-            )
-            sleep 3
-        fi
-    done
-	echo "$(($(cat numUpload)-1))" > numUpload # Minus 1
-}
-
-UPLOAD() {
-    echo -e "$(date +"%m/%d %H:%M:%S") ${INFO} Start upload..."
-    TASK_INFO
-    UPLOAD_FILE
-}
-
-# if [ -z $2 ]; then
-#     echo && echo -e "${ERROR} This script can only be used by passing parameters through Aria2."
-#     exit 1
-# elif [ $2 -eq 0 ]; then
-#     exit 0
-# fi
-
-# if [ -e "${FILE_PATH}.aria2" ]; then
-#     DOT_ARIA2_FILE="${FILE_PATH}.aria2"
-# elif [ -e "${TOP_PATH}.aria2" ]; then
-#     DOT_ARIA2_FILE="${TOP_PATH}.aria2"
-# fi
-
-if [ "${TOP_PATH}" = "${FILE_PATH}" ] && [ $2 -eq 1 ]; then 
-    UPLOAD_PATH="${FILE_PATH}"
-    REMOTE_PATH="${RCLONE_DESTINATION}/"
-    REMOTE_PATH_2="${RCLONE_DESTINATION_2}/"
-    REMOTE_PATH_3="${RCLONE_DESTINATION_3}/"
-    REMOTE_PATH_4="${RCLONE_DESTINATION_4}/"
-    REMOTE_PATH_5="${RCLONE_DESTINATION_5}/"
-    UPLOAD
-    exit 0
-elif [ "${TOP_PATH}" != "${FILE_PATH}" ] && [ $2 -gt 1 ]; then 
-    UPLOAD_PATH="${TOP_PATH}"
-    REMOTE_PATH="${RCLONE_DESTINATION}/${REMOVE_DOWNLOAD_PATH%%/*}"
-	REMOTE_PATH_2="${RCLONE_DESTINATION_2}/${REMOVE_DOWNLOAD_PATH%%/*}"
-	REMOTE_PATH_3="${RCLONE_DESTINATION_3}/${REMOVE_DOWNLOAD_PATH%%/*}"
-	REMOTE_PATH_4="${RCLONE_DESTINATION_4}/${REMOVE_DOWNLOAD_PATH%%/*}"
-	REMOTE_PATH_5="${RCLONE_DESTINATION_5}/${REMOVE_DOWNLOAD_PATH%%/*}"
-    CLEAN_UP
-    UPLOAD
-    exit 0
-elif [ "${TOP_PATH}" != "${FILE_PATH}" ] && [ $2 -eq 1 ]; then 
-    UPLOAD_PATH="${FILE_PATH}"
-    REMOTE_PATH="${RCLONE_DESTINATION}/${REMOVE_DOWNLOAD_PATH%/*}"
-	REMOTE_PATH_2="${RCLONE_DESTINATION_2}/${REMOVE_DOWNLOAD_PATH%/*}"
-	REMOTE_PATH_3="${RCLONE_DESTINATION_3}/${REMOVE_DOWNLOAD_PATH%/*}"
-	REMOTE_PATH_4="${RCLONE_DESTINATION_4}/${REMOVE_DOWNLOAD_PATH%/*}"
-	REMOTE_PATH_5="${RCLONE_DESTINATION_5}/${REMOVE_DOWNLOAD_PATH%/*}"
-    UPLOAD
-    exit 0
+echo -e "Starting Upload!"
+if [ -n "${RCLONE_DESTINATION}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION} successfully"
 fi
 
-echo -e "${ERROR} Unknown error."
-TASK_INFO
-exit 1
+if [ -n "${RCLONE_DESTINATION_2}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_2}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_2} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_3}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_3}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_3} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_4}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_4}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_4} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_5}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_5} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_6}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_6} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_7}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_7} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_8}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_8} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_9}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_9} successfully"
+fi
+
+if [ -n "${RCLONE_DESTINATION_10}" ]; then
+    rclone -v --config="rclone.conf" copy "$topPath" "${RCLONE_DESTINATION_5}"
+    echo -e "Uploaded to ${RCLONE_DESTINATION_10} successfully"
+fi
+
+echo -e "Tasks Done!"
