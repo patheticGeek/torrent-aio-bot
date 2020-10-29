@@ -10,6 +10,3 @@ if [[ -n $RCLONE_CONFIG ]]; then
 	echo -e "$RCLONE_CONFIG" > rclone.conf
 	chmod +x rclone_up.sh
 fi
-
-cd web && npm install && npm run build
-node index.js
