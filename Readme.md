@@ -1,7 +1,5 @@
 # Torrent all-in-one bot
 
-#### This repo is currently unmaintained due to the inconsistency between proxy sites and how they load data
-
 Lorem ipsum i am too lazy figure what it does yourself
 
 You might be lazy too so here ya go:
@@ -9,6 +7,8 @@ You might be lazy too so here ya go:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/patheticGeek/torrent-aio-bot)
 
 Please dont start a test torrent download on my website it works you dont need to just wastes my drive space. Be carefuk when adding torrents to my deployment as it is deployed everytime i commit code here so your downloads may be interrupted.
+
+#### The search section is currently unmaintained due to the inconsistency between proxy sites and their uptimes
 
 ## TODO after deploy
 
@@ -19,6 +19,11 @@ If you only want telegram bot to be workinh set value of DISABLE_WEB env var to 
 ### To get torrent download working:
 
 Set a variable with key "SITE" and value is the link of your site. eg. "https://\<project name>.herokuapp.com". This is important to keep bot alive or server will stop after 30 min of inactivity.
+
+### To start a torrent bot:
+
+Set a enviorment variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
+To set a enviorment variable go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
 
 ### To get search working:
 
@@ -39,22 +44,17 @@ Go to the build packs section in settings and click add buildpack and enter "htt
 >
 > magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny
 
-### To start a torrent bot:
-
-Set a enviorment variable with key "TELEGRAM_TOKEN" and token of your bot as value. [How to get token](https://core.telegram.org/bots/#creating-a-new-bot)
-To set a enviorment variable go to heroku dashboard open the app then go to Settings > Config vars > Reveal Config vars.
-
 ## Changing the sites used for searching
 
 To change the pirate bay site, visit the site you would like to use search something there, copy the url eg. https://thepiratebay.org/search/whatisearched and replace the search with {term} so the url looks like https://thepiratebay.org/search/{term} ans set this to env var PIRATEBAY_SITE
 
 Same, if you want to change the limetorrents site visit the site you want to use and search for something, then replace the thing you searched for with {term} so final url looks like https://limetorrents.at/search?search={term} and set this value to env var LIMETORRENT_SITE
 
-For 1337x env var name will be O337X_SITE
+Simillarly the enviorment variable for 1337x is O337X_SITE
 
 ## API Endpoints
 
-prefix: https://\<project name>.herokuapp.com/api/v1
+Prefix: https://\<project name>.herokuapp.com/api/v1
 
 ### For downloading:
 
@@ -108,4 +108,4 @@ torrent: {
 }
 ```
 
-sites available piratebay, 1337x, limetorrent
+sites available: piratebay, 1337x, limetorrent
