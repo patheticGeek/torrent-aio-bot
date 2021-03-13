@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const LIMETORRENT_SITE = process.env.LIMETORRENT_SITE || "https://limetorrents.at/search?search={term}";
+const LIMETORRENT_SITE = process.env.LIMETORRENT_SITE || "https://www.limetorrentx.cc/search/all/{term}/";
 
 async function search(search, site = LIMETORRENT_SITE) {
   try {
